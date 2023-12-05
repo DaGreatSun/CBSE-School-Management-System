@@ -1,5 +1,6 @@
 package com.cbse.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,6 +25,7 @@ public class Class {
     @NotBlank(message = "Class name cannot be null or blank")
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "myClass", cascade = CascadeType.ALL)
     private List<Student> studentList = new ArrayList<>();
 }

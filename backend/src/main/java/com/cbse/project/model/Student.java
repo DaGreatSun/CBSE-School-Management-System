@@ -1,6 +1,8 @@
 package com.cbse.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,7 +19,7 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @NotNull
+    @Column(unique = true, nullable = false)
     @NotBlank(message = "Student's name cannot be null or blank")
     private String name;
 
@@ -26,7 +28,6 @@ public class Student {
     private String gender;
 
     @NotNull
-    @NotBlank(message = "Age cannot be null or blank")
     private Integer age;
 
     @NotNull
@@ -41,8 +42,10 @@ public class Student {
     @NotBlank(message = "Address name cannot be null or blank")
     private String address;
 
+    @Email
     private String email;
 
+    @JsonIgnore
     @ManyToOne
     private Class myClass;
 }
