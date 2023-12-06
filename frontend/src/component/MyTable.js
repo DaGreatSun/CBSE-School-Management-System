@@ -18,10 +18,9 @@ function MyTable(props) {
         <Table.Body>
           {props.data.map((rowData, idx) => (
             <Table.Row key={idx}>
-              {/* <span>{idx + 1}</span> */}
               {props.columns.map((col, i) => {
                 if (col.text === "No.") {
-                  return <span>{i + 1}</span>;
+                  return <span>{idx + 1}</span>;
                 } else {
                   return <span key={i}>{rowData[col.field]}</span>;
                 }
