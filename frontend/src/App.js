@@ -3,6 +3,7 @@ import "./App.css";
 import Dashboard from "./pages/Dashboard";
 import NavigationBar from "./component/NavigationBar";
 import StudentList from "./pages/Student/StudentList";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
           </div>
         </Router>
       </div>
+
+      <Toaster />
     </div>
   );
 }
