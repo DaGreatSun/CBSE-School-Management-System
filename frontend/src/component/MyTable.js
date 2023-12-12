@@ -4,7 +4,7 @@ import { Table } from "react-daisyui";
 function MyTable(props) {
   return (
     <div className="bg-gray-200 px-5 py-2 rounded-lg bg-opacity-70 font-semibold">
-      <Table>
+      <Table className="table-sm">
         <Table.Head className="font-bold text-base">
           {props.columns.map((col, idx) => {
             if (col.text === "No.") {

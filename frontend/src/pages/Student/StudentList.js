@@ -146,24 +146,24 @@ function StudentList() {
         <div className="flex items-center">
           <Button
             size="sm"
-            className="mr-3 h-11 rounded-full text-lg text-gray-200 bg-blue-500 border-blue-500"
+            className="mr-3 h-10 rounded-full text-lg text-gray-200 bg-blue-500 border-blue-500"
             onClick={(e) => {
               e.preventDefault();
               onEdit(data[i]);
             }}
           >
-            <FiEdit />
+            <FiEdit size={16} />
           </Button>
           <Button
             color="error"
             size="sm"
-            className="h-11 rounded-full text-xl text-gray-200"
+            className="h-10 rounded-full text-xl text-gray-200"
             onClick={(e) => {
               e.preventDefault();
               onDelete(data[i].id);
             }}
           >
-            <MdDelete />
+            <MdDelete size={16} />
           </Button>
         </div>
       );
@@ -307,24 +307,24 @@ function StudentList() {
               <div className="flex items-center">
                 <Button
                   size="sm"
-                  className="mr-3 h-11 rounded-full text-lg text-gray-200 bg-blue-500 border-blue-500"
+                  className="mr-3 h-10 rounded-full text-lg text-gray-200 bg-blue-500 border-blue-500"
                   onClick={(e) => {
                     e.preventDefault();
                     onEdit(data[i]);
                   }}
                 >
-                  <FiEdit />
+                  <FiEdit size={16} />
                 </Button>
                 <Button
                   color="error"
                   size="sm"
-                  className="h-11 rounded-full text-xl text-gray-200"
+                  className="h-10 rounded-full text-xl text-gray-200"
                   onClick={(e) => {
                     e.preventDefault();
                     onDelete(data[i].id);
                   }}
                 >
-                  <MdDelete />
+                  <MdDelete size={16} />
                 </Button>
               </div>
             );
