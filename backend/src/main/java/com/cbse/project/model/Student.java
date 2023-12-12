@@ -39,10 +39,12 @@ public class Student {
     private String contactNo;
 
     @NotNull
-    @NotBlank(message = "Address name cannot be null or blank")
+    @NotBlank(message = "Address cannot be null or blank")
     private String address;
 
     @Email
+    @NotNull
+    @NotBlank(message = "Email address cannot be null or blank")
     private String email;
 
     @JsonIgnore

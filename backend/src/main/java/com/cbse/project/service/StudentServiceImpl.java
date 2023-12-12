@@ -24,6 +24,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public List<Student> filterStudents(String keyword) {
+        return studentRepository.filterStudents(keyword);
+    }
+
+    @Override
     public Student getStudent(Integer studentId) {
         Optional<Student> student = studentRepository.findById(studentId);
 
@@ -44,7 +49,7 @@ public class StudentServiceImpl implements StudentService {
             throw new IllegalArgumentException("Student with the same name already exists");
         } catch (Exception e) {
             // Handle other exceptions
-            throw new RuntimeException("An error occurred while creating the product", e);
+            throw new RuntimeException("An error occurred while creating the student", e);
         }
     }
 
