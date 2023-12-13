@@ -17,7 +17,7 @@ function MyTable(props) {
 
         <Table.Body>
           {props.data.map((rowData, idx) => (
-            <Table.Row key={idx} className="text-base">
+            <Table.Row key={idx}>
               {props.columns.map((col, i) => {
                 if (col.text === "No.") {
                   return <span>{idx + 1}</span>;

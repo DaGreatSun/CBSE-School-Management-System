@@ -2,7 +2,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { STUDENT_API } from "../../utils/api";
 import { IoSearch } from "react-icons/io5";
-import { MdPersonAddAlt1 } from "react-icons/md";
+import {
+  MdModeEdit,
+  MdOutlineKeyboardBackspace,
+  MdPersonAddAlt1,
+} from "react-icons/md";
 import { Button } from "react-daisyui";
 import MyTable from "../../component/MyTable";
 import LoadingPage from "../../component/LoadingPage";
@@ -14,6 +18,8 @@ import { MdDelete } from "react-icons/md";
 import YesNoModal from "../../component/YesNoModal";
 import HTTP_STATUS from "../../constant/httpStatus";
 import { FaRotate } from "react-icons/fa6";
+import { displayDateTimeFormat } from "../../utils/util";
+import { useNavigate } from "react-router-dom";
 
 function StudentList() {
   const [ready, setReady] = useState(false);
@@ -33,6 +39,7 @@ function StudentList() {
   const [address, setAddress] = useState("");
   const [search, setSearch] = useState("");
 
+  const navigate = useNavigate();
   const columns = [
     { field: "no.", text: "No." },
     { field: "name", text: "Name" },
@@ -42,6 +49,8 @@ function StudentList() {
     { field: "email", text: "Email" },
     { field: "parentName", text: "Parent Name" },
     { field: "address", text: "Address" },
+    { field: "createdDate", text: "Student Created Date" },
+    { field: "lastModifiedDate", text: "Last Modified Date" },
     { field: "action", text: "Action" },
   ];
 
@@ -142,29 +151,35 @@ function StudentList() {
     const data = res.data;
 
     for (let i = 0; i < data.length; i++) {
+      data[i].createdDate = displayDateTimeFormat(data[i].createdDate);
+
+      data[i].lastModifiedDate = displayDateTimeFormat(
+        data[i].lastModifiedDate
+      );
+
       data[i].action = (
         <div className="flex items-center">
-          <Button
-            size="sm"
-            className="mr-3 h-10 rounded-full text-lg text-gray-200 bg-blue-500 border-blue-500"
+          <div
+            title="Edit"
+            className="text-blue-500 mr-1 cursor-pointer hover:bg-blue-100 rounded-full p-2 duration-200"
             onClick={(e) => {
               e.preventDefault();
               onEdit(data[i]);
             }}
           >
-            <FiEdit size={16} />
-          </Button>
-          <Button
-            color="error"
-            size="sm"
-            className="h-10 rounded-full text-xl text-gray-200"
+            <MdModeEdit size={20} />
+          </div>
+
+          <div
+            title="Delete"
+            className="text-error cursor-pointer hover:bg-red-50 rounded-full p-2 duration-200"
             onClick={(e) => {
               e.preventDefault();
               onDelete(data[i].id);
             }}
           >
-            <MdDelete size={16} />
-          </Button>
+            <MdDelete size={21} />
+          </div>
         </div>
       );
     }
@@ -353,7 +368,18 @@ function StudentList() {
 
   if (ready) {
     return (
-      <div className="w-full h-full p-10">
+      <div className="w-full h-full p-10 pt-7">
+        <div className="mb-5 flex items-center">
+          <MdOutlineKeyboardBackspace
+            size={27}
+            className="mr-4 mt-1 hover:scale-105 duration-200 cursor-pointer"
+            onClick={() => {
+              navigate("/");
+            }}
+          />
+          <div className="font-semibold text-2xl">All Students</div>
+        </div>
+
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center">
             <input
