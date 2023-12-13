@@ -6,6 +6,7 @@ import {
   MdModeEdit,
   MdOutlineKeyboardBackspace,
   MdPersonAddAlt1,
+  MdTableChart,
 } from "react-icons/md";
 import { Button } from "react-daisyui";
 import MyTable from "../../component/MyTable";
@@ -20,6 +21,7 @@ import HTTP_STATUS from "../../constant/httpStatus";
 import { FaRotate } from "react-icons/fa6";
 import { displayDateTimeFormat } from "../../utils/util";
 import { useNavigate } from "react-router-dom";
+import { TbPhotoFilled } from "react-icons/tb";
 
 function StudentList() {
   const [ready, setReady] = useState(false);
@@ -27,6 +29,7 @@ function StudentList() {
   const [onCreateOrEdit, setOnCreateOrEdit] = useState(true); // true - create, false - edit
   const [yesNoModalShow, setYesNoModalShow] = useState(false);
   const [yesNoModalForward, setYesNoModalForward] = useState(null);
+  const [isCardView, setIsCardView] = useState(true);
 
   const [studentList, setStudentList] = useState([]);
   const [id, setId] = useState(null);
@@ -66,7 +69,7 @@ function StudentList() {
   ];
   const formFields = [
     {
-      size: "12",
+      size: "6",
       name: "Name",
       type: "text",
       required: true,
@@ -76,7 +79,7 @@ function StudentList() {
       },
     },
     {
-      size: "12",
+      size: "6",
       name: "Age",
       type: "number",
       required: true,
@@ -86,7 +89,7 @@ function StudentList() {
       },
     },
     {
-      size: "12",
+      size: "6",
       name: "Contact No.",
       type: "text",
       required: true,
@@ -96,7 +99,7 @@ function StudentList() {
       },
     },
     {
-      size: "12",
+      size: "6",
       name: "Email",
       type: "text",
       required: true,
@@ -106,7 +109,7 @@ function StudentList() {
       },
     },
     {
-      size: "12",
+      size: "6",
       name: "Gender",
       type: "select",
       required: true,
@@ -121,7 +124,7 @@ function StudentList() {
       },
     },
     {
-      size: "12",
+      size: "6",
       name: "Parent Name",
       type: "text",
       required: true,
@@ -158,10 +161,10 @@ function StudentList() {
       );
 
       data[i].action = (
-        <div className="flex items-center">
+        <div className={`flex items-center`}>
           <div
             title="Edit"
-            className="text-blue-500 mr-1 cursor-pointer hover:bg-blue-100 rounded-full p-2 duration-200"
+            className={`text-blue-500 mr-1 cursor-pointer hover:bg-blue-200 rounded-full p-2 duration-200`}
             onClick={(e) => {
               e.preventDefault();
               onEdit(data[i]);
@@ -172,13 +175,41 @@ function StudentList() {
 
           <div
             title="Delete"
-            className="text-error cursor-pointer hover:bg-red-50 rounded-full p-2 duration-200"
+            className={`text-error cursor-pointer hover:bg-red-200 rounded-full p-2 duration-200`}
             onClick={(e) => {
               e.preventDefault();
               onDelete(data[i].id);
             }}
           >
             <MdDelete size={21} />
+          </div>
+        </div>
+      );
+
+      // can ignore
+      data[i].cardViewAction = (
+        <div className={`flex items-center w-[55%] justify-between`}>
+          <div
+            title="Edit"
+            className={`text-blue-500 mr-1 cursor-pointer hover:bg-blue-200 rounded-full duration-200 bg-blue-100 p-3 hover:scale-105`}
+            onClick={(e) => {
+              e.preventDefault();
+              onEdit(data[i]);
+            }}
+          >
+            <MdModeEdit size={25} />
+          </div>
+
+          <div
+            title="Delete"
+            className={`text-error cursor-pointer hover:bg-red-200 rounded-full bg-red-100 p-3 hover:scale-105 duration-200"
+            }`}
+            onClick={(e) => {
+              e.preventDefault();
+              onDelete(data[i].id);
+            }}
+          >
+            <MdDelete size={26} />
           </div>
         </div>
       );
@@ -318,6 +349,12 @@ function StudentList() {
 
         if (res.status === HTTP_STATUS.OK) {
           for (let i = 0; i < data.length; i++) {
+            data[i].createdDate = displayDateTimeFormat(data[i].createdDate);
+
+            data[i].lastModifiedDate = displayDateTimeFormat(
+              data[i].lastModifiedDate
+            );
+
             data[i].action = (
               <div className="flex items-center">
                 <Button
@@ -341,6 +378,34 @@ function StudentList() {
                 >
                   <MdDelete size={16} />
                 </Button>
+              </div>
+            );
+
+            // can ignore
+            data[i].cardViewAction = (
+              <div className={`flex items-center w-[55%] justify-between`}>
+                <div
+                  title="Edit"
+                  className={`text-blue-500 mr-1 cursor-pointer hover:bg-blue-200 rounded-full duration-200 bg-blue-100 p-3 hover:scale-105`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onEdit(data[i]);
+                  }}
+                >
+                  <MdModeEdit size={25} />
+                </div>
+
+                <div
+                  title="Delete"
+                  className={`text-error cursor-pointer hover:bg-red-200 rounded-full bg-red-100 p-3 hover:scale-105 duration-200"
+            }`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onDelete(data[i].id);
+                  }}
+                >
+                  <MdDelete size={26} />
+                </div>
               </div>
             );
           }
@@ -368,7 +433,7 @@ function StudentList() {
 
   if (ready) {
     return (
-      <div className="w-full h-full p-10 pt-7">
+      <div className="w-full h-full p-10 py-7">
         <div className="mb-5 flex items-center">
           <MdOutlineKeyboardBackspace
             size={27}
@@ -382,13 +447,15 @@ function StudentList() {
 
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center">
-            <input
-              type="text"
-              placeholder="Search student..."
-              className="py-2 px-5 rounded-lg opacity-80 w-[500px] mr-3"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+            <form onSubmit={() => onSearch()}>
+              <input
+                type="text"
+                placeholder="Search student..."
+                className="py-2 px-5 rounded-lg opacity-80 w-[500px] mr-3"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </form>
 
             <IoSearch
               size={40}
@@ -407,6 +474,27 @@ function StudentList() {
                 getStudentList();
               }}
             />
+
+            {/* Can ignore */}
+            <label
+              className="swap hover:bg-gray-300 p-2 rounded-full"
+              title="Swap table view"
+            >
+              <input
+                type="checkbox"
+                value={isCardView}
+                onChange={() => setIsCardView(!isCardView)}
+              />
+
+              <TbPhotoFilled
+                size={25}
+                className="swap-off text-white rounded-full cursor-pointer"
+              />
+              <MdTableChart
+                size={25}
+                className="swap-on text-white cursor-pointer"
+              />
+            </label>
           </div>
 
           <div>
@@ -425,12 +513,12 @@ function StudentList() {
           </div>
         </div>
 
-        <div>
-          <MyTable columns={columns} data={studentList} />
+        <div className="mt-10 px-5">
+          <MyTable cardView={isCardView} columns={columns} data={studentList} />
         </div>
 
         <MyForm
-          gridCols={"2"}
+          gridCols={"12"}
           modalOpen={modalOpen}
           formFields={formFields}
           onClose={() => {
