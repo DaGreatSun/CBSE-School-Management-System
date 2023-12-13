@@ -129,7 +129,11 @@ function MyForm(props) {
   }
 
   return (
-    <Modal open={props.modalOpen} className="max-w-none">
+    <Modal.Legacy
+      open={props.modalOpen}
+      className="max-w-none"
+      onClickBackdrop={() => props.onClose()}
+    >
       <Card className="border-0">
         <Card.Title className="flex items-center justify-between px-7">
           <div>{props.title}</div>
@@ -165,7 +169,7 @@ function MyForm(props) {
           </Button>
         </div>
       </Card>
-    </Modal>
+    </Modal.Legacy>
   );
 }
 

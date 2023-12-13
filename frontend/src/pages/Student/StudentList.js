@@ -272,8 +272,8 @@ function StudentList() {
       cb: (ret) => {
         if (ret === true) {
           toDelete(id);
-          setYesNoModalShow(false);
         }
+        setYesNoModalShow(false);
       },
     });
   }
@@ -407,7 +407,10 @@ function StudentList() {
           gridCols={"2"}
           modalOpen={modalOpen}
           formFields={formFields}
-          onClose={() => setModalOpen(false)}
+          onClose={() => {
+            reset();
+            setModalOpen(false);
+          }}
           title={onCreateOrEdit ? "Create Student" : "Edit Student"}
           action={onCreateOrEdit ? () => submitCreate() : () => submitUpdate()}
         />

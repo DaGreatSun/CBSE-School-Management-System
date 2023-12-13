@@ -31,7 +31,7 @@ function YesNoModal(props) {
   }
 
   return (
-    <Modal
+    <Modal.Legacy
       open={modalOpen}
       onClickBackdrop={onClosedCb}
       className={props.className}
@@ -70,7 +70,7 @@ function YesNoModal(props) {
           No
         </Button>
       </Modal.Actions>
-    </Modal>
+    </Modal.Legacy>
   );
 }
 
