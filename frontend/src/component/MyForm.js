@@ -10,6 +10,7 @@ import {
   Textarea,
 } from "react-daisyui";
 import { IoClose } from "react-icons/io5";
+import { twMerge } from "tailwind-merge";
 
 function MyForm(props) {
   function renderDynamicFormFields() {
@@ -39,7 +40,7 @@ function MyForm(props) {
               required = true;
             }
             return (
-              <div className={`col-span-${field.size} gap-2`}>
+              <div className={twMerge(`col-span-${field.size} gap-2`)}>
                 {field.name && field.name !== "" ? (
                   <label className="label py-1 font-bold">{field.name}</label>
                 ) : (
@@ -48,9 +49,11 @@ function MyForm(props) {
 
                 {field.type === "textarea" ? (
                   <Textarea
-                    className={`w-full ${field.height}  ${
-                      field.required ? "border border-green-500" : ""
-                    }`}
+                    className={twMerge(
+                      `w-full ${field.height}  ${
+                        field.required ? "border border-green-500" : ""
+                      }`
+                    )}
                     id={"id" in field ? field.id : "input-" + field.name}
                     size="sm"
                     placeholder={
@@ -93,7 +96,7 @@ function MyForm(props) {
               disabled = true;
             }
             return (
-              <div className={`col-span-${field.size} gap-2`}>
+              <div className={twMerge(`col-span-${field.size} gap-2`)}>
                 {field.name && field.name !== "" ? (
                   <label className="label py-1 font-bold">{field.name}</label>
                 ) : (
@@ -101,9 +104,11 @@ function MyForm(props) {
                 )}
 
                 <Select
-                  className={`w-full h-11 ${
-                    field.required ? "border border-green-500" : ""
-                  } `}
+                  className={twMerge(
+                    `w-full h-11 ${
+                      field.required ? "border border-green-500" : ""
+                    }`
+                  )}
                   placeholder={
                     "placeholder" in field ? field.placeholder : field.name
                   }
@@ -151,7 +156,9 @@ function MyForm(props) {
         <Card.Body className="pt-0 pb-7">
           <Form>
             <div
-              className={`container grid grid-cols-${props.gridCols} gap-y-5 gap-x-10 my-1 max-w-full`}
+              className={twMerge(
+                `container grid grid-cols-${props.gridCols} gap-y-5 gap-x-10 my-1 max-w-full`
+              )}
             >
               {renderDynamicFormFields()}
             </div>
