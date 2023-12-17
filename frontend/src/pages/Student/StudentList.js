@@ -514,7 +514,7 @@ function StudentList() {
         </div>
 
         <div className="mt-10 px-5">
-          <MyTable cardView={isCardView} columns={columns} data={studentList} />
+          <MyTable cardView={isCardView} columns={columns} data={studentList} recordType="student" />
         </div>
 
         <MyForm

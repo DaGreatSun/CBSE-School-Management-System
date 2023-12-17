@@ -4,4 +4,6 @@ const API_ENDPOINT = URL + "/api";
 
 const STUDENT_API = API_ENDPOINT + "/student";
 
-export { STUDENT_API };
+const TEACHER_API = API_ENDPOINT + "/teacher";
+
+export { STUDENT_API, TEACHER_API };
