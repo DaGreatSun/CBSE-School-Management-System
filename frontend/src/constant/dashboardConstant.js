@@ -14,7 +14,7 @@ export const items = [
   {
     name: "Teacher",
     icon: <FaChalkboardTeacher size={60} className="m-auto" />,
-    path: "",
+    path: "/teachers",
   },
   {
     name: "Admin",
