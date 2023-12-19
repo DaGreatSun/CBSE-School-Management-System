@@ -29,6 +29,9 @@ public class Class {
     @NotBlank(message = "Class code cannot be null or blank")
     private String code;
 
+    @NotNull(message = "Class code cannot be null or blank")
+    private Integer fee;
+
     @ManyToMany
     @JoinTable(
         name = "class_student", 

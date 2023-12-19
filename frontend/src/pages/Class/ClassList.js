@@ -20,6 +20,7 @@ function ClassList() {
     const [id, setId] = useState(null);
     const [name, setName] = useState("");
     const [code, setCode] = useState("");
+    const [fee, setFee] = useState(0);
     const [selectedStudents, setSelectedStudents] = useState([]);
     const [studentManagementModalOpen, setStudentManagementModalOpen] = useState(false);
     const [selectedClassId, setSelectedClassId] = useState(null);
@@ -65,7 +66,8 @@ function ClassList() {
     const onEdit = (classData) => {
         setId(classData.id);
         setName(classData.name);
-        setCode(classData.code); // Assuming 'code' is a property of your class data
+        setCode(classData.code); 
+        setFee(classData.fee); 
         setSelectedStudents(classData.studentList || []); // Handle the case where studentList might be undefined
         setOnCreateOrEdit(false);
         setModalOpen(true);
@@ -101,6 +103,7 @@ function ClassList() {
         setId(null); // Ensure id is null for creation
         setName(""); // Reset any existing values
         setCode(""); // Reset any existing values
+        setFee(0); // Reset any existing values
         setOnCreateOrEdit(true);
         setModalOpen(true);
     };
@@ -286,7 +289,7 @@ function ClassList() {
 
 
     const submitCreate = async () => {
-        const newClass = { name, code };
+        const newClass = { name, code, fee };
         try {
             const res = await axios.post(CLASS_API, newClass);
             if (res.status === HTTP_STATUS.CREATED) {
@@ -299,7 +302,7 @@ function ClassList() {
         }
     };
     const submitUpdate = async () => {
-        const updatedClass = { id, name, code };
+        const updatedClass = { id, name, code, fee };
         try {
             const res = await axios.put(`${CLASS_API}/${id}`, updatedClass);
             if (res.status === HTTP_STATUS.OK) {
@@ -314,6 +317,7 @@ function ClassList() {
     const resetForm = () => {
         setName("");
         setCode("");
+        setFee(0);
         setSelectedStudents([]);
     };
     const tableStyle = {
@@ -343,6 +347,7 @@ function ClassList() {
                                 <th style={tableStyle}>No.</th>
                                 <th style={tableStyle}>Name</th>
                                 <th style={tableStyle}>Code</th>
+                                <th style={tableStyle}>Fee</th>
                                 <th style={tableStyle}>Number of Students</th>
                                 <th style={tableStyle}>Action</th>
                             </tr>
@@ -353,6 +358,7 @@ function ClassList() {
                                     <td>{index + 1}</td>
                                     <td>{classData.name}</td>
                                     <td>{classData.code}</td>
+                                    <td>{classData.fee}</td>
                                     <td>{classData.studentCount}</td>
                                     <td>
                                         <div className="flex items-center justify-start space-x-2">
@@ -379,6 +385,7 @@ function ClassList() {
                     formFields={[
                         { size: "12", name: "Name", type: "text", required: true, value: name, onChange: (e) => setName(e.target.value) },
                         { size: "12", name: "Code", type: "text", required: true, value: code, onChange: (e) => setCode(e.target.value) },
+                        { size: "12", name: "Fee", type: "number", required: true, value: fee, onChange: (e) => setFee(e.target.value) },
                         // ... other fields as necessary ...
                     ]}
                     onClose={() => {
