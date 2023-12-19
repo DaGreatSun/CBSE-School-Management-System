@@ -52,6 +52,7 @@ public class ClassServiceImpl implements ClassService {
         Class existingClass = getClassById(id);
         existingClass.setName(classDetails.getName());
         existingClass.setCode(classDetails.getCode());
+        existingClass.setFee(classDetails.getFee());
         return classRepository.save(existingClass);
     }
 

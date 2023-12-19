@@ -7,5 +7,4 @@ const CLASS_API = API_ENDPOINT + "/class";
 
 const TEACHER_API = API_ENDPOINT + "/teacher";
 
-export { STUDENT_API, TEACHER_API };
-export { STUDENT_API, CLASS_API};
+export { STUDENT_API, TEACHER_API, CLASS_API };
