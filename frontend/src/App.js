@@ -5,6 +5,7 @@ import NavigationBar from "./component/NavigationBar";
 import StudentList from "./pages/Student/StudentList";
 import TeacherList from "./pages/Teacher/TeacherList";
 import { Toaster } from "react-hot-toast";
+import ClassList from "./pages/Class/ClassList";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/students" element={<StudentList />} />
               <Route path="/teachers" element={<TeacherList />} />
+              <Route path="/classes" element={<ClassList />} />
             </Routes>
           </div>
         </Router>

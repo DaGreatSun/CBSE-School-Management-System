@@ -25,7 +25,15 @@ public class Class {
     @NotBlank(message = "Class name cannot be null or blank")
     private String name;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "myClass", cascade = CascadeType.ALL)
+    @NotNull
+    @NotBlank(message = "Class code cannot be null or blank")
+    private String code;
+
+    @ManyToMany
+    @JoinTable(
+        name = "class_student", 
+        joinColumns = @JoinColumn(name = "class_id"), 
+        inverseJoinColumns = @JoinColumn(name = "student_id")
+    )
     private List<Student> studentList = new ArrayList<>();
 }

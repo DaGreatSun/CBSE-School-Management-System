@@ -24,7 +24,7 @@ export const items = [
   {
     name: "Class",
     icon: <SiGoogleclassroom size={60} className="m-auto" />,
-    path: "",
+    path: "/classes",
   },
   {
     name: "Attendance",
