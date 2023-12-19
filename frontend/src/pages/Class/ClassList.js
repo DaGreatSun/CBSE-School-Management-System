@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { CLASS_API, STUDENT_API } from "../../utils/api";
+import { CLASS_API, STUDENT_API, TEACHER_API } from "../../utils/api";
 import { MdModeEdit, MdDelete, MdOutlineKeyboardBackspace } from "react-icons/md";
 import { Button } from "react-daisyui";
 import LoadingPage from "../../component/LoadingPage";
@@ -17,12 +17,17 @@ function ClassList() {
     const [yesNoModalShow, setYesNoModalShow] = useState(false);
     const [yesNoModalForward, setYesNoModalForward] = useState(null);
     const [classList, setClassList] = useState([]);
+    const [classData, setClassData] = useState(null);
     const [id, setId] = useState(null);
     const [name, setName] = useState("");
     const [code, setCode] = useState("");
     const [fee, setFee] = useState(0);
+    const [teacherId, setTeacherId] = useState("");
+    const [teachers, setTeachers] = useState([]);
+    const [selectedTeacherId, setSelectedTeacherId] = useState(classData?.teacherId || "");
     const [selectedStudents, setSelectedStudents] = useState([]);
     const [studentManagementModalOpen, setStudentManagementModalOpen] = useState(false);
+    const [teacherAssignModalOpen, setTeacherAssignModalOpen] = useState(false);
     const [selectedClassId, setSelectedClassId] = useState(null);
     const [studentSearchId, setStudentSearchId] = useState("");
     const [enrollLoading, setEnrollLoading] = useState(false);
@@ -31,8 +36,19 @@ function ClassList() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log("ClassList component rendered.");
         getClassList();
+        fetchTeachers();
     }, []);
+    const fetchTeachers = async () => {
+        try {
+            const response = await axios.get(TEACHER_API);
+            setTeachers(response.data);
+        } catch (error) {
+            console.error("Error fetching teachers:", error);
+            toast.error("Failed to fetch teachers.");
+        }
+    };
 
     const getClassList = async () => {
         try {
@@ -66,8 +82,9 @@ function ClassList() {
     const onEdit = (classData) => {
         setId(classData.id);
         setName(classData.name);
-        setCode(classData.code); 
-        setFee(classData.fee); 
+        setCode(classData.code);
+        setFee(classData.fee);
+        setTeacherId(classData.teacherId);
         setSelectedStudents(classData.studentList || []); // Handle the case where studentList might be undefined
         setOnCreateOrEdit(false);
         setModalOpen(true);
@@ -94,10 +111,28 @@ function ClassList() {
         });
         setYesNoModalShow(true);
     };
-
+    const fetchClassData = async (classId) => {
+        try {
+          const response = await axios.get(`${CLASS_API}/${classId}`);
+          const classData = response.data;
+          // Pass classData to the modal
+          setClassData(classData);
+          console.log(classData);
+        } catch (error) {
+          console.error("Error fetching class data:", error);
+          toast.error("Failed to fetch class data.");
+        }
+      };
     const openStudentManagement = (classId) => {
         setSelectedClassId(classId);
         setStudentManagementModalOpen(true);
+    };
+    const openTeacherAssign = (classId) => {
+        console.log("Opening TeacherAssignModal with classId:", classId);
+        setSelectedClassId(classId);
+        setTeacherAssignModalOpen(true);
+        console.log("Opening TeacherAssignModal for classId:", classId);
+        fetchClassData(classId);
     };
     const openCreateClassForm = () => {
         setId(null); // Ensure id is null for creation
@@ -173,10 +208,10 @@ function ClassList() {
             try {
                 // Create an array of integers from selectedStudentIds
                 const studentIds = selectedStudentIds.map(id => parseInt(id));
-        
+
                 // Send the array of studentIds in the request body
                 await axios.post(`${CLASS_API}/${classId}/student`, studentIds);
-        
+
                 toast.success("Students enrolled successfully!");
                 fetchEnrolledStudents(classId); // Refresh the enrolled student list
                 setSelectedStudentIds([]); // Clear selected students
@@ -192,7 +227,7 @@ function ClassList() {
             try {
                 // Send the array of studentIds in the request body
                 await axios.delete(`${CLASS_API}/${classId}/student`, { data: studentIdList });
-        
+
                 toast.success("Student unenrolled successfully!");
                 fetchEnrolledStudents(classId); // Refresh the enrolled student list
             } catch (error) {
@@ -288,8 +323,60 @@ function ClassList() {
     };
 
 
+    const TeacherAssignModal = ({ show, onClose, classId, teachers, classData }) => {
+        const [selectedTeacherId, setSelectedTeacherId] = useState(classData?.teacherId || "");
+      
+        const handleTeacherChange = (e) => {
+          setSelectedTeacherId(e.target.value); // Update the selected teacher ID
+        };
+      
+        const onUpdateTeacher = async () => {
+          try {
+            const response = await axios.put(`${CLASS_API}/${classId}`, {
+              teacherId: selectedTeacherId,
+            });
+      
+            if (response.status === HTTP_STATUS.OK) {
+              toast.success("Teacher assigned successfully!");
+              setTeacherAssignModalOpen(false);
+            }
+          } catch (error) {
+            toast.error("Error assigning teacher.");
+          }
+        };
+      
+        return (
+          <div className={show ? "modal modal-open" : "modal"}>
+            <div className="modal-box">
+              <h3 className="font-bold text-lg">Assign Teacher</h3>
+              <select
+                className="select select-bordered w-full max-w-xs"
+                value={selectedTeacherId}
+                onChange={handleTeacherChange}
+              >
+                <option value="">Select a teacher</option>
+                {teachers.map((teacher) => (
+                  <option key={teacher.id} value={teacher.id}>
+                    {teacher.name}
+                  </option>
+                ))}
+              </select>
+              <div className="modal-action">
+                <button onClick={onClose} className="btn btn-primary">
+                  Close
+                </button>
+                <button onClick={onUpdateTeacher} className="btn btn-primary">
+                  Assign Teacher
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      };
+    
+    
     const submitCreate = async () => {
-        const newClass = { name, code, fee };
+        const newClass = { name, code, fee, teacherId };
         try {
             const res = await axios.post(CLASS_API, newClass);
             if (res.status === HTTP_STATUS.CREATED) {
@@ -302,7 +389,7 @@ function ClassList() {
         }
     };
     const submitUpdate = async () => {
-        const updatedClass = { id, name, code, fee };
+        const updatedClass = { id, name, code, fee, teacherId };
         try {
             const res = await axios.put(`${CLASS_API}/${id}`, updatedClass);
             if (res.status === HTTP_STATUS.OK) {
@@ -324,6 +411,8 @@ function ClassList() {
         color: 'black',
         fontWeight: 'bold',
     };
+
+
 
     if (ready) {
         return (
@@ -348,34 +437,46 @@ function ClassList() {
                                 <th style={tableStyle}>Name</th>
                                 <th style={tableStyle}>Code</th>
                                 <th style={tableStyle}>Fee</th>
-                                <th style={tableStyle}>Number of Students</th>
+                                <th style={tableStyle}>Assigned Teacher</th>
+                                <th style={tableStyle}>Total Students</th>
                                 <th style={tableStyle}>Action</th>
                             </tr>
                         </thead>
                         <tbody style={tableStyle}>
-                            {classList.map((classData, index) => (
-                                <tr key={classData.id}>
-                                    <td>{index + 1}</td>
-                                    <td>{classData.name}</td>
-                                    <td>{classData.code}</td>
-                                    <td>{classData.fee}</td>
-                                    <td>{classData.studentCount}</td>
-                                    <td>
-                                        <div className="flex items-center justify-start space-x-2">
-                                            <Button onClick={() => onEdit(classData)} color="info" size="xs">
-                                                <MdModeEdit size={20} />
-                                            </Button>
-                                            <Button onClick={() => onDelete(classData.id)} color="error" size="xs">
-                                                <MdDelete size={20} />
-                                            </Button>
-                                            <Button onClick={() => openStudentManagement(classData.id)} size="xs">
-                                                Manage Students
-                                            </Button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
+                            {classList.map((classData, index) => {
+                                const teacherName = teachers.find(teacher => {
+                                    // Convert both IDs to numbers before comparing
+                                    return Number(teacher.id) === Number(classData.teacherId);
+                                })?.name || 'No teacher assigned';
+                                return (
+                                    <tr key={classData.id}>
+                                        <td>{index + 1}</td>
+                                        <td>{classData.name}</td>
+                                        <td>{classData.code}</td>
+                                        <td>{classData.fee}</td>
+                                        <td>{teacherName}</td>
+                                        <td>{classData.studentCount}</td>
+                                        <td>
+                                            <div className="flex items-center justify-start space-x-2">
+                                                <Button onClick={() => onEdit(classData)} color="info" size="xs">
+                                                    <MdModeEdit size={20} />
+                                                </Button>
+                                                <Button onClick={() => onDelete(classData.id)} color="error" size="xs">
+                                                    <MdDelete size={20} />
+                                                </Button>
+                                                <Button onClick={() => openStudentManagement(classData.id)} size="xs">
+                                                    Manage Students
+                                                </Button>
+                                                <Button onClick={() => openTeacherAssign(classData.id)} size="xs">
+                                                    Teacher Assign
+                                                </Button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
+
                     </table>
                 </div>
 
@@ -383,10 +484,31 @@ function ClassList() {
                     gridCols={"12"}
                     modalOpen={modalOpen}
                     formFields={[
-                        { size: "12", name: "Name", type: "text", required: true, value: name, onChange: (e) => setName(e.target.value) },
-                        { size: "12", name: "Code", type: "text", required: true, value: code, onChange: (e) => setCode(e.target.value) },
-                        { size: "12", name: "Fee", type: "number", required: true, value: fee, onChange: (e) => setFee(e.target.value) },
-                        // ... other fields as necessary ...
+                        {
+                            size: "12",
+                            name: "Name",
+                            type: "text",
+                            required: true,
+                            value: name,
+                            onChange: (e) => setName(e.target.value)
+                        },
+                        {
+                            size: "12",
+                            name: "Code",
+                            type: "text",
+                            required: true,
+                            value: code,
+                            onChange: (e) => setCode(e.target.value)
+                        },
+                        {
+                            size: "12",
+                            name: "Fee",
+                            type: "number",
+                            required: true,
+                            value: fee,
+                            onChange: (e) => setFee(e.target.value)
+                        },
+
                     ]}
                     onClose={() => {
                         resetForm();
@@ -396,11 +518,19 @@ function ClassList() {
                     action={onCreateOrEdit ? submitCreate : submitUpdate}
                 />
 
+
                 <YesNoModal show={yesNoModalShow} forward={yesNoModalForward} />
                 <StudentManagementModal
                     show={studentManagementModalOpen}
                     onClose={() => setStudentManagementModalOpen(false)}
                     classId={selectedClassId}
+                />
+                <TeacherAssignModal
+                    show={teacherAssignModalOpen}
+                    onClose={() => setTeacherAssignModalOpen(false)}
+                    classId={selectedClassId}
+                    teachers={teachers} // Pass the teachers prop here
+                    classData={classData}
                 />
             </div>
         );

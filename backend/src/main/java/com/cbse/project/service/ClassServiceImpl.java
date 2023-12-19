@@ -50,9 +50,23 @@ public class ClassServiceImpl implements ClassService {
     @Override
     public Class updateClass(Integer id, Class classDetails) {
         Class existingClass = getClassById(id);
-        existingClass.setName(classDetails.getName());
-        existingClass.setCode(classDetails.getCode());
-        existingClass.setFee(classDetails.getFee());
+        
+        if (classDetails.getName() != null) {
+            existingClass.setName(classDetails.getName());
+        }
+        
+        if (classDetails.getCode() != null) {
+            existingClass.setCode(classDetails.getCode());
+        }
+        
+        if (classDetails.getFee() != null) {
+            existingClass.setFee(classDetails.getFee());
+        }
+        
+        if (classDetails.getTeacherId() != null) {
+            existingClass.setTeacherId(classDetails.getTeacherId());
+        }
+        
         return classRepository.save(existingClass);
     }
 
