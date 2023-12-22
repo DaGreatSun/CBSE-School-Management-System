@@ -1,14 +1,5 @@
 import React from "react";
-import {
-  Button,
-  Card,
-  Divider,
-  Form,
-  Input,
-  Modal,
-  Select,
-  Textarea,
-} from "react-daisyui";
+import { Input, Select, Textarea } from "react-daisyui";
 import { IoClose } from "react-icons/io5";
 import { twMerge } from "tailwind-merge";
 
@@ -36,7 +27,7 @@ function SimpleForm(props) {
       required = true;
     }
     return (
-      <div className={twMerge(`col-span-${props.size} gap-2`)}>
+      <div className={twMerge(`col-span-${props.size} gap-2`, props.className)}>
         {props.name && props.name !== "" ? (
           <label className="label py-1 font-bold">{props.name}</label>
         ) : (
@@ -51,7 +42,7 @@ function SimpleForm(props) {
               }`
             )}
             id={"id" in props ? props.id : "input-" + props.name}
-            size="sm"
+            size="md"
             placeholder={
               "placeholder" in props ? props.placeholder : props.name
             }
@@ -68,7 +59,7 @@ function SimpleForm(props) {
               props.required ? "border border-green-500" : ""
             }`}
             id={"id" in props ? props.id : "input-" + props.name}
-            size="sm"
+            size="md"
             placeholder={
               "placeholder" in props ? props.placeholder : props.name
             }
@@ -92,7 +83,7 @@ function SimpleForm(props) {
       disabled = true;
     }
     return (
-      <div className={twMerge(`col-span-${props.size} gap-2`)}>
+      <div className={twMerge(`col-span-${props.size} gap-2`, props.className)}>
         {props.name && props.name !== "" ? (
           <label className="label py-1 font-bold">{props.name}</label>
         ) : (
@@ -106,7 +97,7 @@ function SimpleForm(props) {
           placeholder={"placeholder" in props ? props.placeholder : props.name}
           id={"id" in props ? props.id : "input-" + props.name}
           type="select"
-          size="sm"
+          size="md"
           value={props.value}
           disabled={props.disable}
           onChange={props.onChange}
@@ -119,6 +110,8 @@ function SimpleForm(props) {
         </Select>
       </div>
     );
+  } else {
+    return <div>Simple Form</div>;
   }
 }
 
