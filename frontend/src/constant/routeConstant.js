@@ -32,7 +32,7 @@ export const routes = [
       },
       {
         name: "Student Attendance",
-        path: "/student-attendance",
+        path: "/attendance/class",
         icon: <FaFileSignature size={25} className={style} />,
       },
     ],
@@ -54,7 +54,7 @@ export const routes = [
       },
       {
         name: "Teacher Attendance",
-        path: "/teacher_attendance",
+        path: "/attendance/class",
         icon: <FaFileSignature size={25} className={style} />,
       },
     ],
@@ -76,7 +76,7 @@ export const routes = [
       },
       {
         name: "Attendance",
-        path: "/non-teaching_staff_attendance",
+        path: "/attendance",
         icon: <FaFileSignature size={25} className={style} />,
       },
     ],
