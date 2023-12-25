@@ -37,8 +37,8 @@ function StaffList() {
     const [ic, setIc] = useState("");
     const [gender, setGender] = useState("male");
     const [age, setAge] = useState(0);
-    const [qualification, setQualification] = useState("bachelor degree"); //Master degree, Bachelor Degree
-    const [position, setPosition] = useState("class staff"); //Head of Department, Counseling Staff, Coordinator
+    const [qualification, setQualification] = useState("bachelor degree"); //Master degree, Bachelor Degree etc.
+    const [position, setPosition] = useState("counselor"); //Head of Department, Couselor, Coordinator etc.
     const [contactNo, setContactNo] = useState("");
     const [address, setAddress] = useState("");
     const [email, setEmail] = useState("");
@@ -95,12 +95,8 @@ function StaffList() {
     ];
     const positionSelection = [
         {
-            text: "Class Staff",
-            value: "class staff",
-        },
-        {
-            text: "Counseling Staff",
-            value: "counseling staff",
+            text: "Counselor",
+            value: "counselor",
         },
         {
             text: "Head of Department",
@@ -109,6 +105,18 @@ function StaffList() {
         {
             text: "Coordinator",
             value: "coordinator",
+        },
+        {
+            text: "Janitor",
+            value: "janitor",
+        },
+        {
+            text: "Nurse",
+            value: "nurse",
+        },
+        {
+            text: "Coach",
+            value: "coach",
         },
     ];
     const formFields = [
