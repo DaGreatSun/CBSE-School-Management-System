@@ -1,11 +1,17 @@
 package com.cbse.project.service;
 
 import com.cbse.project.model.Teacher;
+import com.cbse.project.model.TeacherSalary;
 import com.cbse.project.repository.TeacherRepository;
+import com.cbse.project.repository.TeacherSalaryRepository;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +22,9 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Autowired
     TeacherRepository teacherRepository;
+
+    @Autowired
+    private TeacherSalaryRepository teacherSalaryRepository;
 
     @Override
     public List<Teacher> viewAllTeachers() {
@@ -41,13 +50,21 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Teacher createTeacher(Teacher teacher) {
         try {
-            // Perform additional business logic/validation here
-            return teacherRepository.save(teacher);
+            Teacher savedTeacher = teacherRepository.save(teacher);
+
+            TeacherSalary newTeacherSalary = new TeacherSalary();
+            newTeacherSalary.setTeacher(savedTeacher);
+            newTeacherSalary.setBasicPay(BigDecimal.ZERO);
+            newTeacherSalary.setBonuses(BigDecimal.ZERO);
+            newTeacherSalary.setDeductions(BigDecimal.ZERO);
+            newTeacherSalary.setNetPay(BigDecimal.ZERO);
+
+            teacherSalaryRepository.save(newTeacherSalary);
+
+            return savedTeacher;
         } catch (DataIntegrityViolationException e) {
-            // Handle specific exceptions (e.g., unique constraint violation)
             throw new IllegalArgumentException("Teacher with the same name already exists");
         } catch (Exception e) {
-            // Handle other exceptions
             throw new RuntimeException("An error occurred while creating the teacher", e);
         }
     }
@@ -80,9 +97,11 @@ public class TeacherServiceImpl implements TeacherService {
         Optional<Teacher> findTeacher = teacherRepository.findById(teacherId);
 
         if (findTeacher.isPresent()) {
+            Optional<TeacherSalary> teacherSalaryOpt = teacherSalaryRepository.findByTeacherId(teacherId);
+            teacherSalaryOpt.ifPresent(teacherSalaryRepository::delete);
             teacherRepository.deleteById(teacherId);
         } else {
-            throw new IllegalArgumentException("Teache not found with id: " + teacherId);
+            throw new IllegalArgumentException("Teacher not found with id: " + teacherId);
         }
     }
 
