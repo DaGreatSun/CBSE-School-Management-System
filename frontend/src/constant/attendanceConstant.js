@@ -7,33 +7,13 @@ import { RiMoneyDollarCircleFill } from "react-icons/ri";
 
 export const items = [
   {
-    name: "Student",
+    name: "Class",
     icon: <PiStudentFill size={60} className="m-auto" />,
-    path: "/students",
+    path: "/attendance/class",
   },
   {
     name: "Teacher",
     icon: <FaChalkboardTeacher size={60} className="m-auto" />,
-    path: "/teachers",
-  },
-  {
-    name: "Admin",
-    icon: <BsPersonFillLock size={55} className="m-auto" />,
-    path: "",
-  },
-  {
-    name: "Class",
-    icon: <SiGoogleclassroom size={60} className="m-auto" />,
-    path: "/classes",
-  },
-  {
-    name: "Attendance",
-    icon: <FaFileSignature size={50} className="m-auto" />,
-    path: "/attendance",
-  },
-  {
-    name: "Salary",
-    icon: <RiMoneyDollarCircleFill size={60} className="m-auto" />,
     path: "",
   },
 ];
