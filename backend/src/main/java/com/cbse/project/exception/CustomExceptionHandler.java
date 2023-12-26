@@ -18,11 +18,11 @@ public class CustomExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String,String> handleInvalidArgument(MethodArgumentNotValidException exception) {
-        System.out.println("enter???");
         Map<String,String>errorMap=new HashMap<>();
         exception.getBindingResult().getFieldErrors().forEach(error-> {
             errorMap.put(error.getField(),error.getDefaultMessage());
         });
+
         return errorMap;
     }
 }
