@@ -4,10 +4,11 @@ import {
   ATTENDANCE_TEACHER,
   ATTENDANCE_STUDENT,
   CLASS_API,
+  STUDENT_ATTENDANCE_API,
 } from "../../utils/api";
 import SimpleForm from "../../component/SimpleForm";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
-import LoadingPage from "../../component/LoadingPage";
+import { GiCheckMark } from "react-icons/gi";
 import { FaRotate } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, Loading } from "react-daisyui";
@@ -16,27 +17,42 @@ import toast from "react-hot-toast";
 // Image Imports
 import image_teacherMale from "../../images/teacher_male.jpg";
 import image_teacherFemale from "../../images/teacher_female.jpg";
+import MyTable from "../../component/MyTable";
+import HTTP_STATUS from "../../constant/httpStatus";
+import YesNoModal from "../../component/YesNoModal";
 
 function StudentList() {
   /***************************************************************************************/
   //States
   /***************************************************************************************/
+  const [yesNoModalShow, setYesNoModalShow] = useState(false);
+  const [yesNoModalForward, setYesNoModalForward] = useState(null);
   const [ready, setReady] = useState(false);
   const [classList, setClassList] = useState([]);
   const [classId, setClassId] = useState("");
   const [date, setDate] = useState(todaysDate());
 
+  const [studentAttendanceList, setStudentAttendanceList] = useState([]);
+
   /***************************************************************************************/
   //Var
   /***************************************************************************************/
   const navigate = useNavigate();
+  const columns = [
+    { field: "no.", text: "No." },
+    { field: "name", text: "Name" },
+    { field: "contactNo", text: "Contact No." },
+    { field: "email", text: "Email" },
+    { field: "presentStatus", text: "Present" },
+    { field: "action", text: "Action" },
+  ];
 
   /***************************************************************************************/
   //Callbacks
   /***************************************************************************************/
   function todaysDate() {
     var date = new Date();
-    return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   }
 
   async function getClassList() {
@@ -71,6 +87,61 @@ function StudentList() {
 
   async function getAttendance() {
     console.log("Called");
+
+    const res = await axios.get(
+      STUDENT_ATTENDANCE_API + "/" + classId + "/" + date
+    );
+    const data = res.data;
+
+    for (let i = 0; i < data.length; i++) {
+      data[i].name = <div className="font-bold">{data[i].student.name}</div>;
+
+      data[i].contactNo = data[i].student.contactNo;
+
+      data[i].email = data[i].student.email;
+
+      data[i].presentStatus = data[i].present ? (
+        <div className="font-semibold flex items-center">
+          <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+          <div>Present</div>
+        </div>
+      ) : (
+        <div className="font-semibold flex items-center">
+          <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+          <div>Absent</div>
+        </div>
+      );
+
+      data[i].action = data[i].present ? (
+        <Button
+          title="Mark as absent"
+          size="xs"
+          color="success"
+          className="text-white cursor-pointer p-2 duration-200 h-9  rounded-full"
+          onClick={(e) => {
+            e.preventDefault();
+            deleteStudentAttendance(data[i].student);
+          }}
+        >
+          <GiCheckMark size={18} />
+        </Button>
+      ) : (
+        <Button
+          title="Mark as present"
+          size="xs"
+          className="text-green-400 bg-white cursor-pointer p-2 duration-200 h-9  rounded-full"
+          onClick={(e) => {
+            e.preventDefault();
+            createStudentAttendance(data[i].student);
+          }}
+        >
+          <GiCheckMark size={18} />
+        </Button>
+      );
+    }
+    setStudentAttendanceList(data);
+
+    setReady(true);
   }
 
   function renderAttendanceForm() {
@@ -127,15 +198,90 @@ function StudentList() {
   // YAN SHIUH HERE
   function renderStudentAttendance() {
     return (
-      <Card className="bg-white bg-opacity-80">
+      <Card className="bg-gray-200 mb-5">
         <Card.Title className="flex justify-center text-2xl py-2 border-b-2 border-gray-300">
           Students
         </Card.Title>
         <Card.Body className="p-4">
-          Maybe just do a list here or something bah
+          {studentAttendanceList.length > 0 ? (
+            <MyTable columns={columns} data={studentAttendanceList} />
+          ) : (
+            <div className="font-semibold mx-auto">
+              No student has been enrolled to this class.
+            </div>
+          )}
         </Card.Body>
       </Card>
     );
+  }
+
+  function createStudentAttendance(student) {
+    setYesNoModalShow(true);
+    setYesNoModalForward({
+      show: true,
+      text: `Are you sure to mark this student as present on ${date}?`,
+      cb: (ret) => {
+        if (ret === true) {
+          toCreate(student);
+        }
+        setYesNoModalShow(false);
+      },
+    });
+  }
+
+  async function toCreate(student) {
+    const sa = {
+      present: true,
+      student: student,
+    };
+
+    try {
+      const res = await axios.post(
+        STUDENT_ATTENDANCE_API + "/" + classId + "/" + date,
+        sa
+      );
+
+      if (res.status === HTTP_STATUS.OK) {
+        setReady(false);
+        getAttendance();
+        toast.success("Update student attendance successfully!");
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error("Error in updating student info. Please try again.");
+    }
+  }
+
+  function deleteStudentAttendance(student) {
+    setYesNoModalShow(true);
+    setYesNoModalForward({
+      show: true,
+      text: `Are you sure to mark this student as absent on ${date}?`,
+      cb: (ret) => {
+        if (ret === true) {
+          toDelete(student);
+        }
+        setYesNoModalShow(false);
+      },
+    });
+  }
+
+  async function toDelete(student) {
+    try {
+      const res = await axios.delete(
+        STUDENT_ATTENDANCE_API + "/" + classId + "/" + date + "/" + student.id
+      );
+
+      if (res.status === HTTP_STATUS.OK) {
+        setReady(false);
+        getAttendance();
+
+        toast.success("Update student attendance successfully!");
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error("Error in deleting student attendance");
+    }
   }
 
   useEffect(() => {
@@ -144,7 +290,10 @@ function StudentList() {
   }, []);
 
   useEffect(() => {
-    getAttendance();
+    if (classId !== "") {
+      setReady(false);
+      getAttendance();
+    }
   }, [classId, date]);
 
   /***************************************************************************************/
@@ -201,11 +350,13 @@ function StudentList() {
       {ready ? (
         renderAttendanceForm()
       ) : (
-        <div className="flex flex-col items-center justify-center my-auto">
+        <div className="flex flex-col items-center justify-center my-auto mt-40">
           <Loading variant="spinner" className="mb-5 w-20 h-20" />
           <span className="text-2xl font-semibold">Loading contents...</span>
         </div>
       )}
+
+      <YesNoModal show={yesNoModalShow} forward={yesNoModalForward} />
     </div>
   );
 }
