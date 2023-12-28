@@ -20,6 +20,7 @@ import image_teacherFemale from "../../images/teacher_female.jpg";
 import MyTable from "../../component/MyTable";
 import HTTP_STATUS from "../../constant/httpStatus";
 import YesNoModal from "../../component/YesNoModal";
+import { displayDateTimeFormat } from "../../utils/util";
 
 function StudentList() {
   /***************************************************************************************/
@@ -43,6 +44,7 @@ function StudentList() {
     { field: "name", text: "Name" },
     { field: "contactNo", text: "Contact No." },
     { field: "email", text: "Email" },
+    { field: "dateTime", text: "Attendance Time" },
     { field: "presentStatus", text: "Present" },
     { field: "action", text: "Action" },
   ];
@@ -92,6 +94,7 @@ function StudentList() {
       STUDENT_ATTENDANCE_API + "/" + classId + "/" + date
     );
     const data = res.data;
+    console.log("dddd", data);
 
     for (let i = 0; i < data.length; i++) {
       data[i].name = <div className="font-bold">{data[i].student.name}</div>;
@@ -99,6 +102,11 @@ function StudentList() {
       data[i].contactNo = data[i].student.contactNo;
 
       data[i].email = data[i].student.email;
+
+      data[i].dateTime =
+        data[i].attendanceTime !== null
+          ? displayDateTimeFormat(data[i].attendanceTime)
+          : "-";
 
       data[i].presentStatus = data[i].present ? (
         <div className="font-semibold flex items-center">
@@ -233,6 +241,7 @@ function StudentList() {
     const sa = {
       present: true,
       student: student,
+      attendanceTime: new Date().getTime(),
     };
 
     try {
