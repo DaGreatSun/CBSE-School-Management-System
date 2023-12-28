@@ -6,8 +6,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -22,6 +24,8 @@ public class StudentAttendance {
     private Integer id;
 
     private Date date;
+
+    private Long attendanceTime;
 
     @ManyToOne
     @JsonIgnore
