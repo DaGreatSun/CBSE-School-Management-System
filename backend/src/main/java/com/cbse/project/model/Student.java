@@ -53,9 +53,8 @@ public class Student {
     @NotBlank(message = "Email address cannot be null or blank")
     private String email;
 
-    @JsonIgnore
-    @ManyToOne
-    private Class myClass;
+    @NotNull
+    private Integer classId;
 
     @CreatedDate
     private LocalDateTime createdDate;
