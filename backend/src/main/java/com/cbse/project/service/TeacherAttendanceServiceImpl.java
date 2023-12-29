@@ -87,6 +87,6 @@ public class TeacherAttendanceServiceImpl implements TeacherAttendanceService {
 
     private Date stringToDate(String date) {
         List<Integer> dateArr = Arrays.stream(date.split("-")).map(Integer::parseInt).toList();
-        return new Date(dateArr.get(0) - 1900, dateArr.get(1), dateArr.get(2));
+        return new Date(dateArr.get(0) - 1900 , dateArr.get(1) - 1, dateArr.get(2));
     }
 }

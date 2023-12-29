@@ -21,7 +21,7 @@ import HTTP_STATUS from "../../constant/httpStatus";
 import YesNoModal from "../../component/YesNoModal";
 import { displayDateTimeFormat } from "../../utils/util";
 
-function StudentList() {
+function ClassAttendance() {
   /***************************************************************************************/
   //States
   /***************************************************************************************/
@@ -491,4 +491,4 @@ function StudentList() {
   );
 }
 
-export default StudentList;
+export default ClassAttendance;
