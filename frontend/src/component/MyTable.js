@@ -1,11 +1,11 @@
 import React from "react";
 import { Table } from "react-daisyui";
-import image_boy from '../images/boy.jpeg';
-import image_girl from '../images/girl.jpeg';
-import image_teacherMale from '../images/teacher_male.jpg';
-import image_teacherFemale from '../images/teacher_female.jpg';
-import image_staffMale from '../images/male_staff.jpg';
-import image_staffFemale from '../images/female_staff.jpg';
+import image_boy from "../images/boy.jpeg";
+import image_girl from "../images/girl.jpeg";
+import image_teacherMale from "../images/teacher_male.jpg";
+import image_teacherFemale from "../images/teacher_female.jpg";
+import image_staffMale from "../images/male_staff.jpg";
+import image_staffFemale from "../images/female_staff.jpg";
 
 function MyTable(props) {
   const getImagePath = (item) => {
@@ -13,7 +13,8 @@ function MyTable(props) {
     if (props.recordType === "student") {
       imagePath = item.gender === "male" ? image_boy : image_girl;
     } else if (props.recordType === "teacher") {
-      imagePath = item.gender === "male" ? image_teacherMale : image_teacherFemale;
+      imagePath =
+        item.gender === "male" ? image_teacherMale : image_teacherFemale;
     } else if (props.recordType === "staff") {
       imagePath = item.gender === "male" ? image_staffMale : image_staffFemale;
     }
@@ -22,7 +23,7 @@ function MyTable(props) {
 
   if (props.cardView) {
     return (
-      <div className="grid grid-cols-5 gap-11 lg:grid-cols-5 3xl:grid-cols-6 relative">
+      <div className="grid grid-cols-2 gap-11 md:grid-cols-3 xl:grid-cols-5 relative">
         {props.data.map((item, idx) => (
           <div className="bg-white bg-opacity-90 text-center w-[100%] px-10 h-[100%] py-6 flex flex-col justify-center relative rounded-xl group">
             <img
