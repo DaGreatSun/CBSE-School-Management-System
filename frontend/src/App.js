@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import NavigationBar from "./component/NavigationBar";
 import StudentList from "./pages/Student/StudentList";
 import TeacherList from "./pages/Teacher/TeacherList";
+import StaffList from "./pages/Staff/StaffList";
 import { Toaster } from "react-hot-toast";
 import ClassList from "./pages/Class/ClassList";
 import AttendanceDash from "./pages/Attendance/AttendanceDash";
@@ -28,7 +29,8 @@ function App() {
               <Route path="/attendance/class" element={<ClassAttendance />} />
               <Route path="/students" element={<StudentList />} />
               <Route path="/teachers" element={<TeacherList />} />
-              <Route path="//teacher_list" element={<TeacherList />} />
+              <Route path="/teacher_list" element={<TeacherList />} />
+              <Route path="/staff" element={<StaffList />} />
               <Route path="/classes" element={<ClassList />} />
               <Route path="/teacher_salary" element={<TeacherSalaryList />} />
             </Routes>

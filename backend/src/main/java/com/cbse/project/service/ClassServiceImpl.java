@@ -92,6 +92,8 @@ public class ClassServiceImpl implements ClassService {
             // Check if the student is not already in the class
             if (!myClass.getStudentList().contains(student)) {
                 myClass.getStudentList().add(student);
+                student.setClassId(myClass.getId());
+                studentRepository.save(student);
             }
         }
     

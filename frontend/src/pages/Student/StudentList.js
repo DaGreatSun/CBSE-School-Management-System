@@ -305,7 +305,7 @@ function StudentList() {
         toast.success("Updated student successfully!");
       }
     } catch (e) {
-      toast.error("Error in updating student. Please try again.");
+      toast.error("Error in updating student info. Please try again.");
       toastValidationError(e.response.data);
     }
   }
@@ -335,6 +335,7 @@ function StudentList() {
         toast.success("Deleted student successfully!");
       }
     } catch (e) {
+      console.error(e);
       toast.error("Error in deleting student.");
     }
   }
@@ -514,7 +515,12 @@ function StudentList() {
         </div>
 
         <div className="mt-10 px-5">
-          <MyTable cardView={isCardView} columns={columns} data={studentList} recordType="student" />
+          <MyTable
+            cardView={isCardView}
+            columns={columns}
+            data={studentList}
+            recordType="student"
+          />
         </div>
 
         <MyForm

@@ -69,9 +69,11 @@ function MyForm(props) {
                   />
                 ) : (
                   <Input
-                    className={`w-full py-5 ${
-                      field.required ? "border border-green-500" : ""
-                    }`}
+                    className={twMerge(
+                      `w-full py-5 ${
+                        field.required ? "border border-green-500" : ""
+                      }`
+                    )}
                     id={"id" in field ? field.id : "input-" + field.name}
                     size="sm"
                     placeholder={
