@@ -17,6 +17,7 @@ function MyForm(props) {
     return (
       <>
         {props.formFields.map((field, index) => {
+          const key = `${field.name}-${index}`;
           if (
             field.type === "textarea" ||
             field.type === "text" ||
@@ -40,7 +41,7 @@ function MyForm(props) {
               required = true;
             }
             return (
-              <div className={twMerge(`col-span-${field.size} gap-2`)}>
+              <div className={twMerge(`col-span-${field.size} gap-2`)} key={key}>
                 {field.name && field.name !== "" ? (
                   <label className="label py-1 font-bold">{field.name}</label>
                 ) : (
@@ -98,7 +99,7 @@ function MyForm(props) {
               disabled = true;
             }
             return (
-              <div className={twMerge(`col-span-${field.size} gap-2`)}>
+              <div className={twMerge(`col-span-${field.size} gap-2`)} key={key}>
                 {field.name && field.name !== "" ? (
                   <label className="label py-1 font-bold">{field.name}</label>
                 ) : (

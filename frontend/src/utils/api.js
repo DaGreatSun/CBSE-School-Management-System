@@ -14,6 +14,7 @@ const STUDENT_ATTENDANCE_API = API_ENDPOINT + "/student-attendance";
 const ATTENDANCE_TEACHER = "/teacher-attendance";
 const ATTENDANCE_STUDENT = "/student-attendance";
 const ATTENDANCE_STAFF = "/staff-attendance";
+const TEACHER_SALARY_API = API_ENDPOINT + "/teacher-salary";
 
 const STAFF_API = API_ENDPOINT + "/staff";
 
@@ -27,5 +28,6 @@ export {
   ATTENDANCE_TEACHER,
   ATTENDANCE_STUDENT,
   ATTENDANCE_STAFF,
+  TEACHER_SALARY_API,
   STAFF_API,
 };
