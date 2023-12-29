@@ -1,9 +1,11 @@
 import React from "react";
 import { Table } from "react-daisyui";
-import image_boy from "../images/boy.jpeg";
-import image_girl from "../images/girl.jpeg";
-import image_teacherMale from "../images/teacher_male.jpg";
-import image_teacherFemale from "../images/teacher_female.jpg";
+import image_boy from '../images/boy.jpeg';
+import image_girl from '../images/girl.jpeg';
+import image_teacherMale from '../images/teacher_male.jpg';
+import image_teacherFemale from '../images/teacher_female.jpg';
+import image_staffMale from '../images/male_staff.jpg';
+import image_staffFemale from '../images/female_staff.jpg';
 
 function MyTable(props) {
   const getImagePath = (item) => {
@@ -11,8 +13,9 @@ function MyTable(props) {
     if (props.recordType === "student") {
       imagePath = item.gender === "male" ? image_boy : image_girl;
     } else if (props.recordType === "teacher") {
-      imagePath =
-        item.gender === "male" ? image_teacherMale : image_teacherFemale;
+      imagePath = item.gender === "male" ? image_teacherMale : image_teacherFemale;
+    } else if (props.recordType === "staff") {
+      imagePath = item.gender === "male" ? image_staffMale : image_staffFemale;
     }
     return imagePath;
   };
