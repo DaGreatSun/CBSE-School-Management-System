@@ -14,9 +14,11 @@ public interface TeacherAttendanceRepository extends JpaRepository<TeacherAttend
 
     TeacherAttendance findByDate(Date date);
 
-//    @Query("SELECT s FROM TeacherAttendance s WHERE " +
-//            "s.myClass LIKE CONCAT('%', :myClass, '%')" +
-//            "AND s.myClass LIKE CONCAT('%', :myClass, '%')"
-//    )
-//    List<TeacherAttendance> findByClassAndDate(Class myClass);
+    @Query("SELECT s FROM TeacherAttendance s WHERE " +
+            "s.myClass.id = :myClassId " +
+            "AND s.date = :date "
+    )
+    List<TeacherAttendance> findByClassAndDate(Integer myClassId, Date date);
+
+    TeacherAttendance findByTeacherIdAndMyClassIdAndDate(Integer teacherId, Integer myClassId, Date date);
 }

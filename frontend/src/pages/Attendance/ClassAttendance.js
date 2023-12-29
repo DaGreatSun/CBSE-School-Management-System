@@ -1,9 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
-  ATTENDANCE_TEACHER,
-  ATTENDANCE_STUDENT,
   CLASS_API,
+  TEACHER_ATTENDANCE_API,
   STUDENT_ATTENDANCE_API,
 } from "../../utils/api";
 import SimpleForm from "../../component/SimpleForm";
@@ -11,7 +10,7 @@ import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { GiCheckMark } from "react-icons/gi";
 import { FaRotate } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import { Button, Card, Loading } from "react-daisyui";
+import { Button, Card, Loading, Table } from "react-daisyui";
 import toast from "react-hot-toast";
 
 // Image Imports
@@ -34,6 +33,8 @@ function StudentList() {
   const [date, setDate] = useState(todaysDate());
 
   const [studentAttendanceList, setStudentAttendanceList] = useState([]);
+  const [data, setData] = useState({});
+  const [teacher, setTeacher] = useState({});
 
   /***************************************************************************************/
   //Var
@@ -88,13 +89,10 @@ function StudentList() {
   }
 
   async function getAttendance() {
-    console.log("Called");
-
     const res = await axios.get(
       STUDENT_ATTENDANCE_API + "/" + classId + "/" + date
     );
     const data = res.data;
-    console.log("dddd", data);
 
     for (let i = 0; i < data.length; i++) {
       data[i].name = <div className="font-bold">{data[i].student.name}</div>;
@@ -152,6 +150,71 @@ function StudentList() {
     setReady(true);
   }
 
+  async function getTeacherAttendance() {
+    setTeacher({});
+    if (!classId || classId === "" || !date || date > todaysDate()) return;
+
+    var res = await axios.get(`${TEACHER_ATTENDANCE_API}/${classId}/${date}`);
+    var data_ = res.data;
+
+    if (data_) {
+      setData(data_);
+    }
+    if (data_ && "teacher" in data_) {
+      setTeacher(data_.teacher);
+    }
+  }
+
+  async function addTeacherAttendance() {
+    try {
+      const res = await axios.post(
+        TEACHER_ATTENDANCE_API +
+          "/add/" +
+          teacher.id +
+          "/" +
+          classId +
+          "/" +
+          date
+      );
+
+      if (res.status === HTTP_STATUS.OK) {
+        setReady(false);
+        getAttendance();
+        getTeacherAttendance();
+
+        toast.success("Recorded teacher's attendance successfully!");
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error("Error in recording teacher attendance");
+    }
+  }
+
+  async function removeTeacherAttendance() {
+    try {
+      const res = await axios.post(
+        TEACHER_ATTENDANCE_API +
+          "/remove/" +
+          teacher.id +
+          "/" +
+          classId +
+          "/" +
+          date
+      );
+
+      if (res.status === HTTP_STATUS.OK) {
+        setReady(false);
+        getAttendance();
+        getTeacherAttendance();
+
+        toast.success("Removed teacher's attendance successfully!");
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error("Error in removing teacher attendance");
+    }
+  }
+
   function renderAttendanceForm() {
     if (classId === "" || date > todaysDate())
       return (
@@ -183,23 +246,80 @@ function StudentList() {
           Teacher
         </Card.Title>
         <Card.Body className="p-4">
-          <div className="flex gap-4">
-            <img
-              src={getImagePath("male")}
-              alt="Profile"
-              className={`h-52 bg-red-300 object-cover rounded-lg ${
-                "male" === "male" ? "object-right-top" : ""
-              }`}
-            />
-            <div className="w-full relative">
-              <div className="flex">Teacher Details</div>
-              <Button className="w-full absolute bottom-0" color="success">
-                Present
-              </Button>
+          {teacher && teacher.name ? (
+            <div className="flex gap-4">
+              <img
+                src={getImagePath(teacher.gender)}
+                alt="Profile"
+                className={`h-56 bg-red-300 object-cover rounded-lg ${
+                  "male" === "male" ? "object-right-top" : ""
+                }`}
+              />
+              <div className="w-full relative">
+                <div className="flex">
+                  <Table size="xs">
+                    {detailRow("Name", teacher.name)}
+                    {detailRow("Contact No.", teacher.contactNo)}
+                    {detailRow("Gender", teacher.gender)}
+                    {detailRow("Position", teacher.position)}
+                    {detailRow("Qualification", teacher.qualification)}
+                    {detailRow(
+                      "Present",
+                      data.present ? (
+                        <div className="flex items-center">
+                          <div>Present</div>
+                          <div className="w-3 h-3 bg-green-500 rounded-full ml-2"></div>
+                        </div>
+                      ) : (
+                        <div className="flex items-center">
+                          <div>Absent</div>
+                          <div className="w-3 h-3 bg-red-500 rounded-full ml-2"></div>
+                        </div>
+                      )
+                    )}
+                  </Table>
+                </div>
+                {data.present ? (
+                  <>
+                    <Button
+                      className="w-full absolute bottom-0 text-white font-bold text-md"
+                      color="error"
+                      onClick={() => {
+                        removeTeacherAttendance();
+                      }}
+                    >
+                      Remove Attendance
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    className="w-full absolute bottom-0 text-white"
+                    color="success"
+                    onClick={() => {
+                      addTeacherAttendance();
+                    }}
+                  >
+                    Record Attendance
+                  </Button>
+                )}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="flex justify-center">
+              No Teacher Assigned to This Class
+            </div>
+          )}
         </Card.Body>
       </Card>
+    );
+  }
+
+  function detailRow(title, content) {
+    return (
+      <Table.Row>
+        <span className="max-w-[100px]">{title}</span>
+        <span>{content ?? "-"}</span>
+      </Table.Row>
     );
   }
 
@@ -302,6 +422,7 @@ function StudentList() {
     if (classId !== "") {
       setReady(false);
       getAttendance();
+      getTeacherAttendance();
     }
   }, [classId, date]);
 
