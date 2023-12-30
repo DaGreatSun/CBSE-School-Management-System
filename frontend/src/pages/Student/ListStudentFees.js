@@ -37,6 +37,7 @@ function ListStudentFees() {
   const [classSearch, setClassSearch] = useState(null);
   const [classes, setClasses] = useState([]);
   const [studentFees, setStudentFees] = useState([]);
+  const [historyTable, setHistoryTable] = useState(<></>);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
@@ -61,7 +62,8 @@ function ListStudentFees() {
   ];
   const columns2 = [
     { field: "no.", text: "No." },
-    { field: "paidDate", text: "Previous Payment Date" },
+    { field: "paidMonth", text: "Payment Month" },
+    { field: "paidYear", text: "Payment Year" },
     { field: "action", text: "Action" },
   ];
 
@@ -122,10 +124,10 @@ function ListStudentFees() {
     getClassOptions();
   }, []);
 
-  async function getStudentFees(classId) {
-    if (classId !== "") {
+  async function getStudentFees() {
+    if (classSearch && classSearch !== "") {
       try {
-        const res = await axios.get(CLASS_API + "/" + classId);
+        const res = await axios.get(CLASS_API + "/" + classSearch);
         let classData = res.data;
         setData(classData);
         var data_ = res.data.studentList;
@@ -151,6 +153,7 @@ function ListStudentFees() {
           }
           setStudentFees(data_);
         }
+        setReady(true);
       } catch (e) {
         console.error("Error fetching class data:", e);
         toast.error("Error in searching students. Please try again");
@@ -161,11 +164,12 @@ function ListStudentFees() {
   }
 
   async function getFeeHistory(studentId) {
+    setHistoryTable(<></>);
     if (studentId !== "") {
       try {
         const res = await axios.get(STUDENT_FEES_API + "/history/" + studentId);
         let historyData = res.data;
-
+        console.log(historyData);
         if (res.status === HTTP_STATUS.OK) {
           for (let i = 0; i < historyData.length; i++) {
             historyData[i].date = displayDateTimeFormat(historyData[i].date);
@@ -174,7 +178,7 @@ function ListStudentFees() {
               <div className="flex items-center">
                 <Button
                   size="sm"
-                  className="mr-3 h-10 rounded-full text-lg text-gray-200 bg-emerald-500 border-emerald-500"
+                  className="mr-3 h-10 rounded-full text-lg text-gray-200 bg-red-500 border-red-500"
                   onClick={(e) => {
                     e.preventDefault();
                     onDelete(historyData[i].id);
@@ -185,6 +189,17 @@ function ListStudentFees() {
               </div>
             );
           }
+          if (historyData.length > 0) {
+            setHistoryTable(
+              <div className="w-full">
+                <hr />
+                <div className="text-2xl text-center p-3 text-bold">
+                  Payment History
+                </div>
+                <MyTable columns={columns2} data={historyData} />
+              </div>
+            );
+          }
         }
       } catch (e) {
         console.error("Error fetching class data:", e);
@@ -192,6 +207,7 @@ function ListStudentFees() {
       }
     } else {
       toast("Please select a class to proceed!");
+      return;
     }
   }
 
@@ -214,10 +230,10 @@ function ListStudentFees() {
       const res = await axios.delete(STUDENT_FEES_API + "/" + id);
 
       if (res.status === HTTP_STATUS.OK) {
-        setReady(false);
-        getStudentFees(classSearch);
-
+        setModalOpen(false);
+        reset();
         toast.success("Deleted Student Fee Record successfully!");
+        // getStudentFees(classSearch);
       }
     } catch (e) {
       console.error(e);
@@ -257,7 +273,7 @@ function ListStudentFees() {
       if (res.status === HTTP_STATUS.CREATED) {
         setModalOpen(false);
         reset();
-        getStudentFees(classSearch);
+        // getStudentFees(classSearch);
         setMonth(getCurrentMonth());
         toast.success("Payment has been made successfully!");
       }
@@ -363,6 +379,10 @@ function ListStudentFees() {
     }
   }
 
+  React.useEffect(() => {
+    getStudentFees();
+  }, [classSearch]);
+
   if (ready) {
     return (
       <div className="w-full h-full p-10 py-7">
@@ -388,7 +408,7 @@ function ListStudentFees() {
               options={classes}
               onChange={(e) => {
                 setClassSearch(e.target.value);
-                getStudentFees(e.target.value);
+                // getStudentFees(e.target.value);
               }}
             />
             <SimpleForm
@@ -420,6 +440,7 @@ function ListStudentFees() {
             </>
           )}
         </div>
+
         <MyForm
           gridCols={"12"}
           modalOpen={modalOpen}
@@ -430,6 +451,7 @@ function ListStudentFees() {
           }}
           title={"Make Payment"}
           action={submitCreate}
+          historyTable={historyTable}
         />
 
         <YesNoModal show={yesNoModalShow} forward={yesNoModalForward} />

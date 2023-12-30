@@ -62,18 +62,19 @@ public class StudentFeeController {
 //        }
 //    }
 
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<?> deleteStudent(@PathVariable(value = "id") Integer studentId) {
-//        try {
-//            studentService.deleteStudent(studentId);
-//            return new ResponseEntity<>("Student with id: " + studentId + " has been deleted", HttpStatus.OK);
-//        } catch (IllegalArgumentException e) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
-//        } catch (Exception e) {
-//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", e);
-//        }
-//    }
-    //    @GetMapping("/search/{keyword}")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteStudentFee(@PathVariable(value = "id") Integer id) {
+        try {
+            studentFeeService.deleteStudentFee(id);
+            return new ResponseEntity<>("Student Fee with id: " + id + " has been deleted", HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", e);
+        }
+    }
+
+//    @GetMapping("/search/{keyword}")
 //    public ResponseEntity<List<Student>> searchStudents(@PathVariable(name = "keyword") String keyword) {
 //        try {
 //            List<Student> students = new ArrayList<>();
@@ -90,18 +91,16 @@ public class StudentFeeController {
 //        }
 //    }
 
-//    @GetMapping("/history/{id}")
-//    public ResponseEntity<?> getStudent(@PathVariable(value = "id") Integer studentId) {
-//        try {
-//            List<StudentFee> feeHistory = new ArrayList<>();
-//
-//            StudentFee studentFee = studentService.getStudent(studentId);
-//            return new ResponseEntity<>(student, HttpStatus.OK);
-//        } catch (IllegalArgumentException e) {
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
-//        } catch (Exception e) {
-//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", e);
-//        }
-//    }
+    @GetMapping("/history/{studentId}")
+    public ResponseEntity<?> getStudent(@PathVariable(value = "studentId") Integer studentId) {
+        try {
+            List<StudentFee> studentFeeHistory = studentFeeService.getFeeHistory(studentId);
+            return new ResponseEntity<>(studentFeeHistory, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", e);
+        }
+    }
 
 }

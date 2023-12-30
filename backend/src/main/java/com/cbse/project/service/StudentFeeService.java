@@ -1,9 +1,7 @@
 package com.cbse.project.service;
 
-import com.cbse.project.model.Student;
 import com.cbse.project.model.StudentFee;
 
-import java.util.Date;
 import java.util.List;
 
 
@@ -12,6 +10,10 @@ public interface StudentFeeService {
 //    List<Student> viewAllClasses();
 
     List<StudentFee> viewAllStudentFee();
+
+    List<StudentFee> getFeeHistory(Integer studentId);
+
+    void deleteStudentFee(Integer id);
 
     StudentFee createFee(StudentFee studentFee, Integer classId, Integer studentId);
 

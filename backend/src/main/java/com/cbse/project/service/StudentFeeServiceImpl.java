@@ -47,22 +47,19 @@ public class StudentFeeServiceImpl implements StudentFeeService {
         }
     }
 
-//    @Override
+    //    @Override
 //    public List<Student> filterStudents(String keyword) {
 //        return studentRepository.filterStudents(keyword);
 //    }
 //
-//    @Override
-//    public Student getStudent(Integer studentId) {
-//        Optional<Student> student = studentRepository.findById(studentId);
-//
-//        if (student.isPresent()) {
-//            return student.get();
-//        } else {
-//            throw new IllegalArgumentException("Student not found with id: " + studentId);
-//        }
-//    }
-//
+    @Override
+    public List<StudentFee> getFeeHistory(Integer studentId) {
+        List<StudentFee> feeHistory = studentFeeRepository.findByStud_Id(studentId);
+        feeHistory.sort(Comparator.comparing(StudentFee::getCreatedDate).reversed());
+        return feeHistory;
+    }
+
+    //
 //    @Override
 //    public Student updateStudent(Student student) {
 //        Optional<Student> findStudent = studentRepository.findById(student.getId());
@@ -85,14 +82,14 @@ public class StudentFeeServiceImpl implements StudentFeeService {
 //        }
 //    }
 //
-//    @Override
-//    public void deleteStudent(Integer studentId) {
-//        Optional<Student> findStudent = studentRepository.findById(studentId);
-//
-//        if (findStudent.isPresent()) {
-//            studentRepository.deleteById(studentId);
-//        } else {
-//            throw new IllegalArgumentException("Student not found with id: " + studentId);
-//        }
-//    }
+    @Override
+    public void deleteStudentFee(Integer id) {
+        Optional<StudentFee> findStudentFee = studentFeeRepository.findById(id);
+
+        if (findStudentFee.isPresent()) {
+            studentFeeRepository.deleteById(id);
+        } else {
+            throw new IllegalArgumentException("Student Fee not found with id: " + id);
+        }
+    }
 }

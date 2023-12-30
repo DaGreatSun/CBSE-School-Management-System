@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface StudentFeeRepository extends JpaRepository<StudentFee, Integer> {
 
+    List<StudentFee> findByStud_Id(Integer studId);
+
 //    StudentFee findByStudentId(String name);
 //
 //    @Query("SELECT s FROM StudentId WHERE " +

@@ -41,7 +41,10 @@ function MyForm(props) {
               required = true;
             }
             return (
-              <div className={twMerge(`col-span-${field.size} gap-2`)} key={key}>
+              <div
+                className={twMerge(`col-span-${field.size} gap-2`)}
+                key={key}
+              >
                 {field.name && field.name !== "" ? (
                   <label className="label py-1 font-bold">{field.name}</label>
                 ) : (
@@ -99,7 +102,10 @@ function MyForm(props) {
               disabled = true;
             }
             return (
-              <div className={twMerge(`col-span-${field.size} gap-2`)} key={key}>
+              <div
+                className={twMerge(`col-span-${field.size} gap-2`)}
+                key={key}
+              >
                 {field.name && field.name !== "" ? (
                   <label className="label py-1 font-bold">{field.name}</label>
                 ) : (
@@ -166,6 +172,7 @@ function MyForm(props) {
               {renderDynamicFormFields()}
             </div>
           </Form>
+          {props.historyTable ?? <div />}
         </Card.Body>
 
         <div className="px-7">
