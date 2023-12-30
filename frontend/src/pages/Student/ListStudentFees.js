@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { STUDENT_FEES_API, CLASS_API } from "../../utils/api";
 import { IoSearch } from "react-icons/io5";
 import {
+  MdDelete,
   MdModeEdit,
   MdOutlineKeyboardBackspace,
   MdPersonAddAlt1,
@@ -58,6 +59,12 @@ function ListStudentFees() {
     { field: "name", text: "Student Name" },
     { field: "action", text: "Action" },
   ];
+  const columns2 = [
+    { field: "no.", text: "No." },
+    { field: "paidDate", text: "Previous Payment Date" },
+    { field: "action", text: "Action" },
+  ];
+
   const yearOptions = [
     { text: "", value: "" },
     { text: 2023, value: 2023 },
@@ -153,6 +160,71 @@ function ListStudentFees() {
     }
   }
 
+  async function getFeeHistory(studentId) {
+    if (studentId !== "") {
+      try {
+        const res = await axios.get(STUDENT_FEES_API + "/history/" + studentId);
+        let historyData = res.data;
+
+        if (res.status === HTTP_STATUS.OK) {
+          for (let i = 0; i < historyData.length; i++) {
+            historyData[i].date = displayDateTimeFormat(historyData[i].date);
+
+            historyData[i].action = (
+              <div className="flex items-center">
+                <Button
+                  size="sm"
+                  className="mr-3 h-10 rounded-full text-lg text-gray-200 bg-emerald-500 border-emerald-500"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onDelete(historyData[i].id);
+                  }}
+                >
+                  <MdDelete size={16} />
+                </Button>
+              </div>
+            );
+          }
+        }
+      } catch (e) {
+        console.error("Error fetching class data:", e);
+        toast.error("Error in searching students. Please try again");
+      }
+    } else {
+      toast("Please select a class to proceed!");
+    }
+  }
+
+  function onDelete(id) {
+    setYesNoModalShow(true);
+    setYesNoModalForward({
+      show: true,
+      text: "Are you sure you want to delete this history?",
+      cb: (ret) => {
+        if (ret === true) {
+          toDelete(id);
+        }
+        setYesNoModalShow(false);
+      },
+    });
+  }
+
+  async function toDelete(id) {
+    try {
+      const res = await axios.delete(STUDENT_FEES_API + "/" + id);
+
+      if (res.status === HTTP_STATUS.OK) {
+        setReady(false);
+        getStudentFees(classSearch);
+
+        toast.success("Deleted Student Fee Record successfully!");
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error("Error in Deleting Student Fee Record.");
+    }
+  }
+
   async function getClassOptions() {
     const res = await axios.get(CLASS_API);
     const data_ = res.data;
@@ -202,6 +274,7 @@ function ListStudentFees() {
   function doPayment(data_, classData) {
     setModalOpen(true);
     setId(data_.id);
+    getFeeHistory(data_.id);
     var date = new Date();
     setYear(date.getFullYear());
     setMonth(getCurrentMonth());

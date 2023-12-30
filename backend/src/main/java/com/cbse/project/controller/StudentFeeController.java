@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -89,16 +90,18 @@ public class StudentFeeController {
 //        }
 //    }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<?> getStudent(@PathVariable(value = "id") Integer studentId) {
-//        try {
-//            Student student = studentService.getStudent(studentId);
-//            return new ResponseEntity<>(student, HttpStatus.OK);
-//        } catch (IllegalArgumentException e) {
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
-//        } catch (Exception e) {
-//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", e);
-//        }
-//    }
+    @GetMapping("/history/{id}")
+    public ResponseEntity<?> getStudent(@PathVariable(value = "id") Integer studentId) {
+        try {
+            List<StudentFee> feeHistory = new ArrayList<>();
+
+            StudentFee studentFee = studentService.getStudent(studentId);
+            return new ResponseEntity<>(student, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", e);
+        }
+    }
 
 }
