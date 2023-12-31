@@ -10,8 +10,14 @@ import ClassList from "./pages/Class/ClassList";
 import AttendanceDash from "./pages/Attendance/AttendanceDash";
 import ClassAttendance from "./pages/Attendance/ClassAttendance";
 import TeacherSalaryList from "./pages/Teacher/TeacherSalaryList";
+<<<<<<< Updated upstream
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+=======
+import StaffSalaryList from "./pages/Staff/StaffSalaryList";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+>>>>>>> Stashed changes
 
 function App() {
   const stripePromise = loadStripe('pk_test_51OPTTmE67CGRL4YLqr0m7y0eJzhGUmHvDrVAi00sSnEl67OEvCfVdfNm5sOp7jgG4oboEgNczgXL692xyRWW2IIZ00v89MHQXv');
@@ -31,6 +37,11 @@ function App() {
               <Route path="/teachers" element={<TeacherList />} />
               <Route path="/teacher_list" element={<TeacherList />} />
               <Route path="/staff" element={<StaffList />} />
+<<<<<<< Updated upstream
+=======
+              <Route path="/staff_salary" element={<StaffSalaryList />} />
+
+>>>>>>> Stashed changes
               <Route path="/classes" element={<ClassList />} />
               <Route path="/teacher_salary" element={<TeacherSalaryList />} />
             </Routes>

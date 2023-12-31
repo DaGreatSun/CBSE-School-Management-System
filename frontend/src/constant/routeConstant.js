@@ -71,7 +71,7 @@ export const routes = [
       },
       {
         name: "Salary",
-        path: "/non-teaching_staff_salary",
+        path: "/staff_salary",
         icon: <RiMoneyDollarCircleFill size={25} className={style} />,
       },
       {
