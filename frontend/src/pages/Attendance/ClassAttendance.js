@@ -31,6 +31,7 @@ function ClassAttendance() {
   const [classList, setClassList] = useState([]);
   const [classId, setClassId] = useState("");
   const [date, setDate] = useState(todaysDate());
+  const [pending, setPending] = useState(false);
 
   const [studentAttendanceList, setStudentAttendanceList] = useState([]);
   const [data, setData] = useState({});
@@ -166,7 +167,9 @@ function ClassAttendance() {
   }
 
   async function addTeacherAttendance() {
+    if (pending) return;
     try {
+      setPending(true);
       const res = await axios.post(
         TEACHER_ATTENDANCE_API +
           "/add/" +
@@ -176,6 +179,7 @@ function ClassAttendance() {
           "/" +
           date
       );
+      setPending(false);
 
       if (res.status === HTTP_STATUS.OK) {
         setReady(false);
@@ -191,7 +195,9 @@ function ClassAttendance() {
   }
 
   async function removeTeacherAttendance() {
+    if (pending) return;
     try {
+      setPending(true);
       const res = await axios.post(
         TEACHER_ATTENDANCE_API +
           "/remove/" +
@@ -201,6 +207,7 @@ function ClassAttendance() {
           "/" +
           date
       );
+      setPending(false);
 
       if (res.status === HTTP_STATUS.OK) {
         setReady(false);
@@ -358,6 +365,8 @@ function ClassAttendance() {
   }
 
   async function toCreate(student) {
+    console.log(pending);
+    if (pending) return;
     const sa = {
       present: true,
       student: student,
@@ -365,10 +374,12 @@ function ClassAttendance() {
     };
 
     try {
+      setPending(true);
       const res = await axios.post(
         STUDENT_ATTENDANCE_API + "/" + classId + "/" + date,
         sa
       );
+      setPending(false);
 
       if (res.status === HTTP_STATUS.OK) {
         setReady(false);
@@ -396,10 +407,13 @@ function ClassAttendance() {
   }
 
   async function toDelete(student) {
+    if (pending) return;
     try {
+      setPending(true);
       const res = await axios.delete(
         STUDENT_ATTENDANCE_API + "/" + classId + "/" + date + "/" + student.id
       );
+      setPending(false);
 
       if (res.status === HTTP_STATUS.OK) {
         setReady(false);

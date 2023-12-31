@@ -26,6 +26,7 @@ function StaffAttendance() {
   const [date, setDate] = useState(todaysDate());
 
   const [staffAttendanceList, setStaffAttendanceList] = useState([]);
+  const [pending, setPending] = useState(false);
 
   /***************************************************************************************/
   //Var
@@ -176,10 +177,13 @@ function StaffAttendance() {
   }
 
   async function toCreate(staffId) {
+    if (pending) return;
     try {
+      setPending(true);
       const res = await axios.post(
         STAFF_ATTENDANCE_API + "/add/" + staffId + "/" + date
       );
+      setPending(false);
 
       if (res.status === HTTP_STATUS.OK) {
         setReady(false);
@@ -207,10 +211,13 @@ function StaffAttendance() {
   }
 
   async function toDelete(staffId) {
+    if (pending) return;
     try {
+      setPending(true);
       const res = await axios.delete(
         STAFF_ATTENDANCE_API + "/" + staffId + "/" + date
       );
+      setPending(false);
 
       if (res.status === HTTP_STATUS.OK) {
         setReady(false);
