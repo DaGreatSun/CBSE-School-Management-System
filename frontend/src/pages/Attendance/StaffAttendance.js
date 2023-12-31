@@ -59,6 +59,7 @@ function StaffAttendance() {
       if (inputDate > todaysDate()) {
         toast.error("Please Select a valid Date");
       } else {
+        setReady(false);
         setDate(e.target.value);
       }
     }
@@ -235,6 +236,10 @@ function StaffAttendance() {
     getAttendance();
   }, []);
 
+  useEffect(() => {
+    getAttendance();
+  }, [date]);
+
   /***************************************************************************************/
   //Page
   /***************************************************************************************/
@@ -287,7 +292,8 @@ function StaffAttendance() {
           className="text-white rounded-full p-2 hover:bg-gray-300 cursor-pointer"
           onClick={() => {
             setReady(false);
-            getAttendance();
+            setKeyword("");
+            setDate(todaysDate());
           }}
         />
       </div>
