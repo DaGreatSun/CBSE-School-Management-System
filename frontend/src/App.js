@@ -23,6 +23,7 @@ function App() {
   return (
     <div className="w-full bg-bg-school h-screen bg-no-repeat bg-center bg-cover">
       <div className="bg-gray-400 w-full h-full bg-opacity-60 overflow-y-scroll">
+      <Elements stripe={stripePromise}>
         <Router>
           <NavigationBar />
           <div className="h-full">
@@ -46,6 +47,7 @@ function App() {
             </Routes>
           </div>
         </Router>
+        </Elements>
       </div>
 
       <Toaster />
