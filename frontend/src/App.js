@@ -28,11 +28,19 @@ function App() {
           <div className="h-full">
             <Routes>
               <Route path="/" element={<Dashboard />} />
+              <Route path="/login" element={<Dashboard />} />
               <Route path="/attendance" element={<AttendanceDash />} />
               <Route path="/attendance/class" element={<ClassAttendance />} />
+              <Route path="/attendance/staff" element={<StaffAttendance />} />
+
               <Route path="/students" element={<StudentList />} />
               <Route path="/student-fee" element={<ListStudentFees />} />
+
               <Route path="/teachers" element={<TeacherList />} />
+              <Route path="/teacher_salary" element={<TeacherSalaryList />} />
+
+              <Route path="/staff" element={<StaffList />} />
+
               <Route path="/classes" element={<ClassList />} />
             </Routes>
           </div>

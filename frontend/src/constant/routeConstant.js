@@ -22,7 +22,7 @@ export const routes = [
     paths: [
       {
         name: "Student List",
-        path: "/student-list",
+        path: "/students",
         icon: <IoIosPeople size={25} className={style} />,
       },
       {
@@ -44,7 +44,7 @@ export const routes = [
     paths: [
       {
         name: "Teacher List",
-        path: "/teacher_list",
+        path: "/teachers",
         icon: <IoIosPeople size={25} className={style} />,
       },
       {
@@ -66,7 +66,7 @@ export const routes = [
     paths: [
       {
         name: "Staff List",
-        path: "/staff_list",
+        path: "/staff",
         icon: <IoIosPeople size={25} className={style} />,
       },
       {
@@ -76,7 +76,7 @@ export const routes = [
       },
       {
         name: "Attendance",
-        path: "/attendance",
+        path: "/attendance/staff",
         icon: <FaFileSignature size={25} className={style} />,
       },
     ],
@@ -84,7 +84,7 @@ export const routes = [
   {
     collapse: false,
     name: "Log Out",
-    path: "/login",
+    path: "/",
     icon: <RiLogoutBoxRLine size={25} className={style} />,
   },
 ];
