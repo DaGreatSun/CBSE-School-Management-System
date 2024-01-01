@@ -43,6 +43,7 @@ function App() {
               <Route path="/teacher_salary" element={<TeacherSalaryList />} />
 
               <Route path="/staff" element={<StaffList />} />
+              <Route path="/staff_salary" element={<StaffSalaryList />} />
 
               <Route path="/classes" element={<ClassList />} />
               <Route path="/income" element={<Income />} />
