@@ -53,7 +53,6 @@ public class Student {
     @NotBlank(message = "Email address cannot be null or blank")
     private String email;
 
-    @NotNull
     private Integer classId;
 
     @CreatedDate
