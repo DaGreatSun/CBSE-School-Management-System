@@ -9,7 +9,7 @@ const Payslip = ({ teacher, paymentDetails, onClose }) => {
 
         // Company Info
         pdf.setFontSize(18);
-        pdf.text('CBSE Company Sdn Bhd', 20, 30);
+        pdf.text('SCHOLLY', 20, 30);
         pdf.setFontSize(12);
         pdf.text('PAYSLIP', 20, 40);
 
@@ -52,7 +52,7 @@ const Payslip = ({ teacher, paymentDetails, onClose }) => {
     return (
         <div id="payslip" className="payslip-container bg-white shadow rounded-lg p-8 my-4 mx-auto max-w-4xl">
             <div className="company-info mb-6">
-                <h1 className="text-3xl font-bold">CBSE Company Sdn Bhd</h1>
+                <h1 className="text-3xl font-bold">SCHOLLY</h1>
                 <h2 className="text-xl font-semibold mt-1">PAYSLIP</h2>
             </div>
 
