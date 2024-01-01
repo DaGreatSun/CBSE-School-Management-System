@@ -32,8 +32,8 @@ export const items = [
     path: "/attendance",
   },
   {
-    name: "Salary",
+    name: "Income",
     icon: <RiMoneyDollarCircleFill size={60} className="m-auto" />,
-    path: "",
+    path: "/income",
   },
 ];

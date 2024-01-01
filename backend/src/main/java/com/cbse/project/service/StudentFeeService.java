@@ -2,6 +2,8 @@ package com.cbse.project.service;
 
 import com.cbse.project.model.StudentFee;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 
@@ -16,6 +18,8 @@ public interface StudentFeeService {
     void deleteStudentFee(Integer id);
 
     StudentFee createFee(StudentFee studentFee, Integer classId, Integer studentId);
+
+    List<StudentFee> getStatementList(LocalDateTime startDate, LocalDateTime endDate);
 
 //    List<Student> filterStudents(String keyword);
 //    Student getStudent(Integer studentId);

@@ -8,8 +8,12 @@ import com.cbse.project.repository.StudentRepository;
 import com.cbse.project.repository.StudentFeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -47,6 +51,16 @@ public class StudentFeeServiceImpl implements StudentFeeService {
         }
     }
 
+    @Override
+    public List<StudentFee> getStatementList(LocalDateTime startDate, LocalDateTime endDate) {
+        List<StudentFee> studentFees;
+        System.out.println(startDate);
+        System.out.println(endDate);
+        studentFees = studentFeeRepository.findByCreatedDateGreaterThanEqualAndCreatedDateLessThanEqual(startDate, endDate);
+        System.out.println(studentFees);
+        return studentFees;
+    }
+
     //    @Override
 //    public List<Student> filterStudents(String keyword) {
 //        return studentRepository.filterStudents(keyword);
@@ -59,29 +73,6 @@ public class StudentFeeServiceImpl implements StudentFeeService {
         return feeHistory;
     }
 
-    //
-//    @Override
-//    public Student updateStudent(Student student) {
-//        Optional<Student> findStudent = studentRepository.findById(student.getId());
-//
-//        if (findStudent.isPresent()) {
-//            Student existingStudent = findStudent.get();
-//
-//            existingStudent.setName(student.getName());
-//            existingStudent.setAge(student.getAge());
-//            existingStudent.setAddress(student.getAddress());
-//            existingStudent.setEmail(student.getEmail());
-//            existingStudent.setGender(student.getGender());
-//            existingStudent.setContactNo(student.getContactNo());
-//            existingStudent.setParentName(student.getParentName());
-//            existingStudent.setMyClass(student.getMyClass());
-//
-//            return studentRepository.save(existingStudent);
-//        } else {
-//            throw new IllegalArgumentException("Student not found with id: " + student.getId());
-//        }
-//    }
-//
     @Override
     public void deleteStudentFee(Integer id) {
         Optional<StudentFee> findStudentFee = studentFeeRepository.findById(id);
@@ -92,4 +83,6 @@ public class StudentFeeServiceImpl implements StudentFeeService {
             throw new IllegalArgumentException("Student Fee not found with id: " + id);
         }
     }
+
+
 }
