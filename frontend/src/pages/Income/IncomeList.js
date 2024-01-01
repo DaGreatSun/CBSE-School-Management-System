@@ -94,7 +94,6 @@ function ListIncome() {
 
             if (statementData[i].myClass && statementData[i].myClass.fee) {
               totalIncome = totalIncome + statementData[i].myClass.fee;
-              console.log(i, " ", totalIncome);
               statementData[i].incomeCol =
                 statementData[i].myClass.fee &&
                 statementData[i].myClass.fee > 0 ? (
@@ -109,7 +108,6 @@ function ListIncome() {
             }
             setNettIncome(totalIncome);
           }
-          console.log(statementData);
           setStatementData(statementData);
         }
         setReady(true);
