@@ -41,10 +41,7 @@ function MyForm(props) {
               required = true;
             }
             return (
-              <div
-                className={twMerge(`col-span-${field.size} gap-2`)}
-                key={key}
-              >
+              <div className={twMerge(`col-span-6 gap-2`)} key={key}>
                 {field.name && field.name !== "" ? (
                   <label className="label py-1 font-bold">{field.name}</label>
                 ) : (
@@ -102,10 +99,7 @@ function MyForm(props) {
               disabled = true;
             }
             return (
-              <div
-                className={twMerge(`col-span-${field.size} gap-2`)}
-                key={key}
-              >
+              <div className={twMerge(`col-span-6 gap-2`)} key={key}>
                 {field.name && field.name !== "" ? (
                   <label className="label py-1 font-bold">{field.name}</label>
                 ) : (
@@ -166,7 +160,7 @@ function MyForm(props) {
           <Form>
             <div
               className={twMerge(
-                `container grid grid-cols-${props.gridCols} gap-y-5 gap-x-10 my-1 max-w-full`
+                `container grid grid-cols-12 gap-y-5 gap-x-10 my-1 max-w-full`
               )}
             >
               {renderDynamicFormFields()}

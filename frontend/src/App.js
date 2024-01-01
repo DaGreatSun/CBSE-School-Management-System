@@ -12,8 +12,9 @@ import AttendanceDash from "./pages/Attendance/AttendanceDash";
 import ClassAttendance from "./pages/Attendance/ClassAttendance";
 import StaffAttendance from "./pages/Attendance/StaffAttendance";
 import TeacherSalaryList from "./pages/Teacher/TeacherSalaryList";
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
+import Income from "./pages/Income/IncomeList";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
 function App() {
   const stripePromise = loadStripe(
@@ -45,6 +46,7 @@ function App() {
               <Route path="/staff_salary" element={<StaffSalaryList />} />
 
               <Route path="/classes" element={<ClassList />} />
+              <Route path="/income" element={<Income />} />
             </Routes>
           </div>
         </Router>

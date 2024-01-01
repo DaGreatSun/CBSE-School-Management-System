@@ -9,10 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -49,18 +48,6 @@ public class StudentFeeController {
         }
 
     }
-
-//    @PutMapping
-//    public ResponseEntity<?> updateStudent(@RequestBody @Valid Student student) {
-//        try {
-//            Student updatedStudent = studentService.updateStudent(student);
-//            return new ResponseEntity<>(updatedStudent, HttpStatus.OK);
-//        } catch (IllegalArgumentException e) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
-//        } catch (Exception e) {
-//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", e);
-//        }
-//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteStudentFee(@PathVariable(value = "id") Integer id) {
@@ -100,6 +87,21 @@ public class StudentFeeController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", e);
+        }
+    }
+
+    @GetMapping("/statement/{startDate}/{endDate}")
+    public ResponseEntity<?> getStatementList(@PathVariable(value = "startDate") String startDate, @PathVariable(value = "endDate") String endDate) {
+        try {
+            DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDateTime startDateConverted = LocalDate.parse(startDate, dateFormat).atStartOfDay();
+            LocalDateTime endDateConverted = LocalDate.parse(endDate, dateFormat).atStartOfDay();
+
+            List<StudentFee> studentFeeList = studentFeeService.getStatementList(startDateConverted, endDateConverted);
+            return new ResponseEntity<>(studentFeeList, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }
 
