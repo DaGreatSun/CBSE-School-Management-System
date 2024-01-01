@@ -8,3 +8,8 @@ export function displayDateTimeFormat(time) {
     hour12: true,
   });
 }
+
+export function todaysDate() {
+  var date = new Date().toISOString().split("T")[0];
+  return date;
+}

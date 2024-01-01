@@ -8,6 +8,7 @@ import { FaMagnifyingGlass, FaRotate } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, Loading, Table } from "react-daisyui";
 import toast from "react-hot-toast";
+import { todaysDate } from "../../utils/util";
 
 // Image Imports
 import MyTable from "../../component/MyTable";
@@ -45,11 +46,6 @@ function StaffAttendance() {
   /***************************************************************************************/
   //Callbacks
   /***************************************************************************************/
-  function todaysDate() {
-    var date = new Date();
-    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-  }
-
   function onChangeForm(e) {
     if (e.target.id === "keyword") setKeyword(e.target.value);
     if (e.target.id === "date") {
