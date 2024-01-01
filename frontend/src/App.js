@@ -1,19 +1,26 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
+
 import Dashboard from "./pages/Dashboard";
 import NavigationBar from "./component/NavigationBar";
-import StudentList from "./pages/Student/StudentList";
-import TeacherList from "./pages/Teacher/TeacherList";
-import StaffList from "./pages/Staff/StaffList";
-import ListStudentFees from "./pages/Student/ListStudentFees";
-import { Toaster } from "react-hot-toast";
-import ClassList from "./pages/Class/ClassList";
+
 import AttendanceDash from "./pages/Attendance/AttendanceDash";
 import ClassAttendance from "./pages/Attendance/ClassAttendance";
 import StaffAttendance from "./pages/Attendance/StaffAttendance";
-import TeacherSalaryList from "./pages/Teacher/TeacherSalaryList";
-import StaffSalaryList from "./pages/Staff/StaffSalaryList";
+
+import StudentList from "./pages/Student/StudentList";
+import ListStudentFees from "./pages/Student/ListStudentFees";
 import Income from "./pages/Income/IncomeList";
+
+import TeacherList from "./pages/Teacher/TeacherList";
+import TeacherSalaryList from "./pages/Teacher/TeacherSalaryList";
+
+import StaffList from "./pages/Staff/StaffList";
+import StaffSalaryList from "./pages/Staff/StaffSalaryList";
+
+import ClassList from "./pages/Class/ClassList";
+
+import { Toaster } from "react-hot-toast";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -25,32 +32,32 @@ function App() {
   return (
     <div className="w-full bg-bg-school h-screen bg-no-repeat bg-center bg-cover">
       <div className="bg-gray-400 w-full h-full bg-opacity-60 overflow-y-scroll">
-      <Elements stripe={stripePromise}>
-        <Router>
-          <NavigationBar />
-          <div className="h-full">
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/login" element={<Dashboard />} />
+        <Elements stripe={stripePromise}>
+          <Router>
+            <NavigationBar />
+            <div className="h-full">
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/login" element={<Dashboard />} />
 
-              <Route path="/attendance" element={<AttendanceDash />} />
-              <Route path="/attendance/class" element={<ClassAttendance />} />
-              <Route path="/attendance/staff" element={<StaffAttendance />} />
+                <Route path="/attendance" element={<AttendanceDash />} />
+                <Route path="/attendance/class" element={<ClassAttendance />} />
+                <Route path="/attendance/staff" element={<StaffAttendance />} />
 
-              <Route path="/students" element={<StudentList />} />
-              <Route path="/student-fee" element={<ListStudentFees />} />
+                <Route path="/students" element={<StudentList />} />
+                <Route path="/student-fee" element={<ListStudentFees />} />
 
-              <Route path="/teachers" element={<TeacherList />} />
-              <Route path="/teacher_salary" element={<TeacherSalaryList />} />
+                <Route path="/teachers" element={<TeacherList />} />
+                <Route path="/teacher_salary" element={<TeacherSalaryList />} />
 
-              <Route path="/staff" element={<StaffList />} />
-              <Route path="/staff_salary" element={<StaffSalaryList />} />
+                <Route path="/staff" element={<StaffList />} />
+                <Route path="/staff_salary" element={<StaffSalaryList />} />
 
-              <Route path="/classes" element={<ClassList />} />
-              <Route path="/income" element={<Income />} />
-            </Routes>
-          </div>
-        </Router>
+                <Route path="/classes" element={<ClassList />} />
+                <Route path="/income" element={<Income />} />
+              </Routes>
+            </div>
+          </Router>
         </Elements>
       </div>
 
