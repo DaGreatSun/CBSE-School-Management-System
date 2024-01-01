@@ -357,28 +357,28 @@ function StudentList() {
             );
 
             data[i].action = (
-              <div className="flex items-center">
-                <Button
-                  size="sm"
-                  className="mr-3 h-10 rounded-full text-lg text-gray-200 bg-blue-500 border-blue-500"
+              <div className={`flex items-center`}>
+                <div
+                  title="Edit"
+                  className={`text-blue-500 mr-1 cursor-pointer hover:bg-blue-200 rounded-full p-2 duration-200`}
                   onClick={(e) => {
                     e.preventDefault();
                     onEdit(data[i]);
                   }}
                 >
-                  <FiEdit size={16} />
-                </Button>
-                <Button
-                  color="error"
-                  size="sm"
-                  className="h-10 rounded-full text-xl text-gray-200"
+                  <MdModeEdit size={20} />
+                </div>
+
+                <div
+                  title="Delete"
+                  className={`text-error cursor-pointer hover:bg-red-200 rounded-full p-2 duration-200`}
                   onClick={(e) => {
                     e.preventDefault();
                     onDelete(data[i].id);
                   }}
                 >
-                  <MdDelete size={16} />
-                </Button>
+                  <MdDelete size={21} />
+                </div>
               </div>
             );
 
