@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { STAFF_SALARY_API } from "../../utils/api";e
+import { STAFF_SALARY_API } from "../../utils/api";
 import { IoSearch } from "react-icons/io5";
 import {
     MdModeEdit,

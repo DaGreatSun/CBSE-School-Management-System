@@ -12,6 +12,7 @@ import AttendanceDash from "./pages/Attendance/AttendanceDash";
 import ClassAttendance from "./pages/Attendance/ClassAttendance";
 import StaffAttendance from "./pages/Attendance/StaffAttendance";
 import TeacherSalaryList from "./pages/Teacher/TeacherSalaryList";
+import StaffSalaryList from "./pages/Staff/StaffSalaryList";
 import Income from "./pages/Income/IncomeList";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
