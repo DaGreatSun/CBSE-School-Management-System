@@ -19,7 +19,7 @@ export const items = [
   {
     name: "Admin",
     icon: <BsPersonFillLock size={55} className="m-auto" />,
-    path: "/admin",
+    path: "/staff",
   },
   {
     name: "Class",
