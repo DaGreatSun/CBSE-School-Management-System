@@ -8,5 +8,9 @@ import java.util.List;
 
 
 public interface TeacherAttendanceService {
-    List<TeacherAttendance> getTeacherAttendance(Integer myClass, Date date);
+    TeacherAttendance getTeacherAttendance(Integer classId, String date);
+
+    TeacherAttendance addTeacherAttendance(Integer teacherId, Integer classId, String date);
+
+    void removeTeacherAttendance(Integer teacherId, Integer classId, String date);
 }

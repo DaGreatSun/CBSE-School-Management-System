@@ -5,52 +5,54 @@ import NavigationBar from "./component/NavigationBar";
 import StudentList from "./pages/Student/StudentList";
 import TeacherList from "./pages/Teacher/TeacherList";
 import StaffList from "./pages/Staff/StaffList";
+import ListStudentFees from "./pages/Student/ListStudentFees";
 import { Toaster } from "react-hot-toast";
 import ClassList from "./pages/Class/ClassList";
 import AttendanceDash from "./pages/Attendance/AttendanceDash";
 import ClassAttendance from "./pages/Attendance/ClassAttendance";
+import StaffAttendance from "./pages/Attendance/StaffAttendance";
 import TeacherSalaryList from "./pages/Teacher/TeacherSalaryList";
-<<<<<<< Updated upstream
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-=======
-import StaffSalaryList from "./pages/Staff/StaffSalaryList";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
->>>>>>> Stashed changes
 
 function App() {
-  const stripePromise = loadStripe('pk_test_51OPTTmE67CGRL4YLqr0m7y0eJzhGUmHvDrVAi00sSnEl67OEvCfVdfNm5sOp7jgG4oboEgNczgXL692xyRWW2IIZ00v89MHQXv');
+  const stripePromise = loadStripe(
+    "pk_test_51OPTTmE67CGRL4YLqr0m7y0eJzhGUmHvDrVAi00sSnEl67OEvCfVdfNm5sOp7jgG4oboEgNczgXL692xyRWW2IIZ00v89MHQXv"
+  );
 
   return (
-    <Elements stripe={stripePromise}>
     <div className="w-full bg-bg-school h-screen bg-no-repeat bg-center bg-cover">
       <div className="bg-gray-400 w-full h-full bg-opacity-60 overflow-y-scroll">
+      <Elements stripe={stripePromise}>
         <Router>
           <NavigationBar />
           <div className="h-full">
             <Routes>
               <Route path="/" element={<Dashboard />} />
+              <Route path="/login" element={<Dashboard />} />
+
               <Route path="/attendance" element={<AttendanceDash />} />
               <Route path="/attendance/class" element={<ClassAttendance />} />
+              <Route path="/attendance/staff" element={<StaffAttendance />} />
+
               <Route path="/students" element={<StudentList />} />
+              <Route path="/student-fee" element={<ListStudentFees />} />
+
               <Route path="/teachers" element={<TeacherList />} />
-              <Route path="/teacher_list" element={<TeacherList />} />
+              <Route path="/teacher_salary" element={<TeacherSalaryList />} />
+
               <Route path="/staff" element={<StaffList />} />
-<<<<<<< Updated upstream
-=======
               <Route path="/staff_salary" element={<StaffSalaryList />} />
 
->>>>>>> Stashed changes
               <Route path="/classes" element={<ClassList />} />
-              <Route path="/teacher_salary" element={<TeacherSalaryList />} />
             </Routes>
           </div>
         </Router>
+        </Elements>
       </div>
+
       <Toaster />
     </div>
-    </Elements>
   );
 }
 
