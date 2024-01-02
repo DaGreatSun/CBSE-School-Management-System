@@ -12,6 +12,7 @@ import { FaRotate } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, Loading, Table } from "react-daisyui";
 import toast from "react-hot-toast";
+import { todaysDate } from "../../utils/util";
 
 // Image Imports
 import image_teacherMale from "../../images/teacher_male.jpg";
@@ -54,11 +55,6 @@ function ClassAttendance() {
   /***************************************************************************************/
   //Callbacks
   /***************************************************************************************/
-  function todaysDate() {
-    var date = new Date();
-    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-  }
-
   async function getClassList() {
     var res = await axios.get(CLASS_API);
     var data = res.data;

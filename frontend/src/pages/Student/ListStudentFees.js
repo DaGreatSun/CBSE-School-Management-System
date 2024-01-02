@@ -124,6 +124,47 @@ function ListStudentFees() {
     getClassOptions();
   }, []);
 
+  async function onSearch() {
+    if (classSearch && classSearch !== "") {
+      try {
+        const res = await axios.get(CLASS_API + "/" + classSearch);
+        let classData = res.data;
+        setData(classData);
+        var data = res.data.studentList;
+
+        if (res.status === HTTP_STATUS.OK) {
+          let data_ = data.filter(
+            (item) =>
+              item.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
+          );
+          for (let i = 0; i < data_.length; i++) {
+            data_[i].date = displayDateTimeFormat(data_[i].date);
+
+            data_[i].action = (
+              <div className="flex items-center">
+                <Button
+                  size="sm"
+                  className="mr-3 h-10 rounded-full text-lg text-gray-200 bg-emerald-500 border-emerald-500"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    doPayment(data_[i], classData);
+                  }}
+                >
+                  <FaMoneyCheckDollar size={16} />
+                </Button>
+              </div>
+            );
+          }
+          setStudentFees(data_);
+        }
+        setReady(true);
+      } catch (e) {
+        console.error("Error fetching class data:", e);
+        toast.error("Error in searching students. Please try again");
+      }
+    }
+  }
+
   async function getStudentFees() {
     if (classSearch && classSearch !== "") {
       try {
@@ -158,8 +199,6 @@ function ListStudentFees() {
         console.error("Error fetching class data:", e);
         toast.error("Error in searching students. Please try again");
       }
-    } else {
-      toast("Please select a class to proceed!");
     }
   }
 
@@ -169,7 +208,6 @@ function ListStudentFees() {
       try {
         const res = await axios.get(STUDENT_FEES_API + "/history/" + studentId);
         let historyData = res.data;
-        console.log(historyData);
         if (res.status === HTTP_STATUS.OK) {
           for (let i = 0; i < historyData.length; i++) {
             historyData[i].date = displayDateTimeFormat(historyData[i].date);
@@ -302,57 +340,6 @@ function ListStudentFees() {
       setName(data_.name);
     }
   }
-
-  async function onSearch() {
-    // setReady(false);
-    // if (search !== "") {
-    //   try {
-    //     const res = await axios.get(STUDENT_API + "/search/" + search);
-    //     const data = res.data;
-    //     if (res.status === HTTP_STATUS.OK) {
-    //       for (let i = 0; i < data.length; i++) {
-    //         data[i].createdDate = displayDateTimeFormat(data[i].createdDate);
-    //         data[i].lastModifiedDate = displayDateTimeFormat(
-    //           data[i].lastModifiedDate
-    //         );
-    //         data[i].action = (
-    //           <div className="flex items-center">
-    //             <Button
-    //               size="sm"
-    //               className="mr-3 h-10 rounded-full text-lg text-gray-200 bg-blue-500 border-blue-500"
-    //               onClick={(e) => {
-    //                 e.preventDefault();
-    //                 onEdit(data[i]);
-    //               }}
-    //             >
-    //               <FiEdit size={16} />
-    //             </Button>
-    //             <Button
-    //               color="error"
-    //               size="sm"
-    //               className="h-10 rounded-full text-xl text-gray-200"
-    //               onClick={(e) => {
-    //                 e.preventDefault();
-    //                 onDelete(data[i].id);
-    //               }}
-    //             >
-    //               <MdDelete size={16} />
-    //             </Button>
-    //           </div>
-    //         );
-    //
-    //       }
-    //       setStudentList(data);
-    //       setReady(true);
-    //     }
-    //   } catch (e) {
-    //     toast.error("Error in searching students. Please try again");
-    //   }
-    // } else {
-    //   getStudentList();
-    // }
-  }
-
   function reset() {
     setName("");
     setMonth(getCurrentMonth());

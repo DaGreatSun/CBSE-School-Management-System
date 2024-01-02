@@ -1,7 +1,7 @@
 import React from 'react';
 import { jsPDF } from 'jspdf';
 
-const Payslip = ({ teacher, paymentDetails, onClose }) => {
+const Payslip = ({ staff, paymentDetails, onClose }) => {
     const downloadPayslipAsPDF = () => {
         const pdf = new jsPDF();
 
@@ -9,15 +9,15 @@ const Payslip = ({ teacher, paymentDetails, onClose }) => {
 
         // Company Info
         pdf.setFontSize(18);
-        pdf.text('SCHOLLY', 20, 30);
+        pdf.text('CBSE Company Sdn Bhd', 20, 30);
         pdf.setFontSize(12);
         pdf.text('PAYSLIP', 20, 40);
 
         // Employee Info
         pdf.setFontSize(10);
-        pdf.text(`NAME: ${teacher.name.toUpperCase()}`, 20, 50);
-        pdf.text(`NRIC: ${teacher.ic}`, 20, 60);
-        pdf.text(`POSITION: ${teacher.position.toUpperCase()}`, 20, 70);
+        pdf.text(`NAME: ${staff.name.toUpperCase()}`, 20, 50);
+        pdf.text(`NRIC: ${staff.ic}`, 20, 60);
+        pdf.text(`POSITION: ${staff.position.toUpperCase()}`, 20, 70);
 
         // Payment Details
         pdf.setFontSize(11);
@@ -52,15 +52,15 @@ const Payslip = ({ teacher, paymentDetails, onClose }) => {
     return (
         <div id="payslip" className="payslip-container bg-white shadow rounded-lg p-8 my-4 mx-auto max-w-4xl">
             <div className="company-info mb-6">
-                <h1 className="text-3xl font-bold">SCHOLLY</h1>
+                <h1 className="text-3xl font-bold">CBSE Company Sdn Bhd</h1>
                 <h2 className="text-xl font-semibold mt-1">PAYSLIP</h2>
             </div>
 
             <div className="employee-info grid grid-cols-2 mb-6">
                 <div>
-                    <p className='uppercase'><strong>NAME: </strong>{teacher.name} </p>
-                    <p className='uppercase'><strong>NRIC: </strong> {teacher.ic}</p>
-                    <p className='uppercase'><strong>POSITION: </strong> {teacher.position}</p>
+                    <p className='uppercase'><strong>NAME: </strong>{staff.name} </p>
+                    <p className='uppercase'><strong>NRIC: </strong> {staff.ic}</p>
+                    <p className='uppercase'><strong>POSITION: </strong> {staff.position}</p>
                 </div>
                 <div className="text-right">
                     <p><strong>BASIC PAY: </strong> {paymentDetails.basicPay}</p>
