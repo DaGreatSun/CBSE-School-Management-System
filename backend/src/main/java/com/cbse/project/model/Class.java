@@ -32,7 +32,6 @@ public class Class {
     @NotNull(message = "Class fee cannot be null or blank")
     private Integer fee;
 
-    @NotNull(message = "Class teacherid cannot be null or blank only be replaced")
     private Integer teacherId;
 
     @ManyToMany
