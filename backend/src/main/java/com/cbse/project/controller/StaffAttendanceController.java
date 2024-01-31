@@ -56,7 +56,7 @@ public class StaffAttendanceController {
     }
 
     @DeleteMapping("/{staffId}/{date}")
-    public ResponseEntity<?> removeTeacherAttendance(
+    public ResponseEntity<?> removeStaffAttendance(
             @PathVariable(value = "staffId") Integer staffId,
             @PathVariable(value = "date") String date) {
         try {
